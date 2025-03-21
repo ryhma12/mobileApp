@@ -1,4 +1,4 @@
-package com.example.mobileapp
+package com.example.mobileapp.model
 
 data class Matches (
     val userIds: List<Int>,
