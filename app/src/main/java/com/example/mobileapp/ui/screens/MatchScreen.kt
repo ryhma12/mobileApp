@@ -12,8 +12,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 
 @Composable
-fun HomeScreen(navController: NavController) {
+fun MatchScreen(navController: NavController) {
     Box(modifier = Modifier.background(color = Color.Red).fillMaxSize()) {
-        Text("Home screen", modifier = Modifier.align(Alignment.Center), fontSize = 32.sp)
+        Text("Matches", modifier = Modifier.align(Alignment.Center), fontSize = 32.sp)
     }
 }
