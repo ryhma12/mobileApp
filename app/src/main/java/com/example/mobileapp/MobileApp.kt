@@ -23,6 +23,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.mobileapp.ui.screens.ContactsScreen
 import com.example.mobileapp.ui.screens.HomeScreen
+import com.example.mobileapp.ui.screens.LoginScreen
 import com.example.mobileapp.ui.screens.MatchScreen
 import com.example.mobileapp.ui.screens.SearchScreen
 import com.example.mobileapp.ui.screens.SettingsScreen
@@ -61,7 +62,7 @@ fun MobileApp(navController: NavHostController = rememberNavController()) {
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = "home_route",
+            startDestination = "login_route",
             modifier = Modifier.padding(innerPadding)
         ) {
             composable("home_route") { HomeScreen(navController) }
@@ -69,6 +70,7 @@ fun MobileApp(navController: NavHostController = rememberNavController()) {
             composable("contacts_route") { ContactsScreen(navController) }
             composable("match_route") { MatchScreen(navController) }
             composable("settings_route") { SettingsScreen(navController) }
+            composable("login_route") { LoginScreen(navController) }
         }
     }
 }
