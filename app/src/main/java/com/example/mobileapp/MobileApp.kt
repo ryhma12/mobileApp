@@ -13,6 +13,7 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.internal.composableLambda
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -27,6 +28,7 @@ import com.example.mobileapp.ui.screens.LoginScreen
 import com.example.mobileapp.ui.screens.MatchScreen
 import com.example.mobileapp.ui.screens.SearchScreen
 import com.example.mobileapp.ui.screens.SettingsScreen
+import com.example.mobileapp.ui.screens.UpdateUserInfoScreen
 import com.example.mobileapp.ui.shared.TopBar
 
 @Composable
@@ -62,7 +64,7 @@ fun MobileApp(navController: NavHostController = rememberNavController()) {
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = "login_route",
+            startDestination = "updateUser_route",
             modifier = Modifier.padding(innerPadding)
         ) {
             composable("home_route") { HomeScreen(navController) }
@@ -71,6 +73,7 @@ fun MobileApp(navController: NavHostController = rememberNavController()) {
             composable("match_route") { MatchScreen(navController) }
             composable("settings_route") { SettingsScreen(navController) }
             composable("login_route") { LoginScreen(navController) }
+            composable("updateUser_route") { UpdateUserInfoScreen(navController) }
         }
     }
 }

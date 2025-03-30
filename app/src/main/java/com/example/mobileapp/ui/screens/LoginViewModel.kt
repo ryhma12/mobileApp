@@ -35,7 +35,7 @@ class LoginViewModel : ViewModel() {
                         val userData = hashMapOf(
                             "username" to username,
                             "email" to email,
-                            "uid" to it.uid
+                            "uid" to it.uid,
                         )
 
                         val firestore = FirebaseFirestore.getInstance()
