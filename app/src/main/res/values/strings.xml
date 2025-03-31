@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">mobileApp</string>
+    <string name="bio">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        Nam sollicitudin facilisis tellus vehicula imperdiet.
+        Fusce fringilla elit non metus feugiat dictum vel a magna.
+        Nunc ut sodales tellus. Cras quis nisi tristique, feugiat lacus sed, vulputate tortor.
+        Sed nec elit nec purus vulputate finibus. Nunc mollis vehicula suscipit.
+        Nunc ut dolor feugiat, rutrum nisi semper, suscipit erat. Sed nunc erat,
+        sollicitudin nec imperdiet nec, ornare vitae dolor. Vestibulum pretium neque
+        scelerisque neque scelerisque fringilla. Phasellus vitae dolor lectus.
+        Sed laoreet facilisis rutrum.
+        Praesent quam ipsum, accumsan et quam fringilla, eleifend vulputate justo.</string>
 </resources>
