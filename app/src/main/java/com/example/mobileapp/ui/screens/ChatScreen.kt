@@ -15,10 +15,34 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.tooling.preview.Preview
 
+// Firebase importit:
+// import com.google.firebase.database.DatabaseReference
+// import com.google.firebase.database.FirebaseDatabase
+// import com.google.firebase.database.DataSnapshot
+// import com.google.firebase.database.DatabaseError
+// import com.google.firebase.database.ChildEventListener
+
 @Composable
 fun ChatScreen() {
     var message by remember { mutableStateOf(TextFieldValue("")) }
     val messages = remember { mutableStateListOf<String>() }
+
+    // Firebaseen liittyvä:
+    // val databaseReference = FirebaseDatabase.getInstance().getReference("chat_messages")
+
+    // Real-time updates:
+    // LaunchedEffect(Unit) {
+    //     databaseReference.addChildEventListener(object : ChildEventListener {
+    //         override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+    //             val newMessage = snapshot.getValue(String::class.java)
+    //             newMessage?.let { messages.add(it) }
+    //
+    //         override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
+    //         override fun onChildRemoved(snapshot: DataSnapshot) {}
+    //         override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
+    //         override fun onCancelled(error: DatabaseError) {}
+    //     })
+    // }
 
     Column(
         modifier = Modifier
@@ -32,6 +56,7 @@ fun ChatScreen() {
                 .fillMaxWidth()
                 .verticalScroll(rememberScrollState())
         ) {
+            // Viestien näyttäminen:
             messages.forEach { msg ->
                 ChatBubble(message = msg, isUser = messages.indexOf(msg) % 2 == 0)
             }
@@ -48,8 +73,13 @@ fun ChatScreen() {
             )
             Button(onClick = {
                 if (message.text.isNotBlank()) {
-                    messages.add(message.text)
-                    message = TextFieldValue("")
+                    // Viestien lähettäminen
+                    messages.add(message.text) // Viestit UI:ssa
+                    message = TextFieldValue("") // Tekstikentän tyhjentäminen
+
+                    // Viestien tallentaminen Firebasessa:
+                    // val newMessageRef = databaseReference.push()
+                    // newMessageRef.setValue(message.text)
                 }
             }) {
                 Text("Send")
@@ -57,7 +87,6 @@ fun ChatScreen() {
         }
     }
 }
-
 
 @Composable
 fun ChatBubble(message: String, isUser: Boolean) {
@@ -82,12 +111,20 @@ fun ChatBubble(message: String, isUser: Boolean) {
     }
 }
 
-
 @Preview(showBackground = true)
 @Composable
 fun ChatScreenPreview() {
     ChatScreen()
 }
+
+
+
+
+
+
+
+
+
 
 
 
