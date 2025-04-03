@@ -64,7 +64,7 @@ fun MobileApp(navController: NavHostController = rememberNavController()) {
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = "updateUser_route",
+            startDestination = "login_route",
             modifier = Modifier.padding(innerPadding)
         ) {
             composable("home_route") { HomeScreen(navController) }

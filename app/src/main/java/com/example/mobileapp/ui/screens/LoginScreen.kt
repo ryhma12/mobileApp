@@ -15,6 +15,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -28,12 +29,25 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import android.util.Log
 
 
 @Composable
 fun LoginScreen(navController: NavController, viewModel: LoginViewModel = viewModel()) {
     var loginChoice by remember { mutableStateOf("login") }
     val authState by viewModel.authState.collectAsState()
+
+    Log.i("auth","authstate: $authState")
+
+    LaunchedEffect(authState) {
+        Log.d("auth","authstate: $authState")
+        if(authState is AuthState.Success) {
+            navController.navigate("home_route") {
+                popUpTo("login_route") { inclusive = true }
+            }
+        }
+    }
+
 
     Box(
         modifier = Modifier
