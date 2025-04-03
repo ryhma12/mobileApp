@@ -10,4 +10,6 @@
         scelerisque neque scelerisque fringilla. Phasellus vitae dolor lectus.
         Sed laoreet facilisis rutrum.
         Praesent quam ipsum, accumsan et quam fringilla, eleifend vulputate justo.</string>
+    <string name="channel_name">testikanava</string>
+    <string name="channel_description">tama on testikanava</string>
 </resources>
