@@ -1,5 +1,6 @@
 package com.example.mobileapp.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -23,7 +24,10 @@ import androidx.compose.ui.tooling.preview.Preview
 // import com.google.firebase.database.ChildEventListener
 
 @Composable
-fun ChatScreen() {
+fun ChatScreen(
+    contactId: Int
+) {
+    Log.d("ChatScreen", "ContactId: $contactId")
     var message by remember { mutableStateOf(TextFieldValue("")) }
     val messages = remember { mutableStateListOf<String>() }
 
@@ -114,20 +118,5 @@ fun ChatBubble(message: String, isUser: Boolean) {
 @Preview(showBackground = true)
 @Composable
 fun ChatScreenPreview() {
-    ChatScreen()
+    ChatScreen(contactId = 1)
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
