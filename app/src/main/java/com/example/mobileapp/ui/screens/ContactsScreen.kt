@@ -18,6 +18,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
@@ -31,7 +32,7 @@ import com.example.mobileapp.model.Contact
 @Composable
 fun ContactsScreen(navController: NavController) {
     val viewModel = ContactsViewModel()
-    val contacts by viewModel.contacts
+    val contacts by viewModel.contacts.collectAsState()
     LazyColumn(modifier = Modifier.fillMaxSize()) {
         items(contacts) {
             ContactItem(navController, contact = it)
@@ -70,7 +71,8 @@ private fun ContactItemButton(
         onClick = onClick,
         modifier = modifier
     ) {
-        Icon(imageVector = Icons.Filled.Add,
+        Icon(
+            imageVector = Icons.Filled.Add,
             contentDescription = ""
         )
     }

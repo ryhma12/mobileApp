@@ -1,4 +1,4 @@
-package com.example.mobileapp.ui.screens
+package com.example.mobileapp.ui.screens.chat
 
 import android.util.Log
 import androidx.compose.foundation.background

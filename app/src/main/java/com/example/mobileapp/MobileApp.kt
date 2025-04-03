@@ -23,7 +23,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.mobileapp.ui.screens.ChatScreen
+import com.example.mobileapp.ui.screens.chat.ChatScreen
 import com.example.mobileapp.ui.screens.ContactsScreen
 import com.example.mobileapp.ui.screens.HomeScreen
 import com.example.mobileapp.ui.screens.LoginScreen
@@ -38,7 +38,6 @@ fun MobileApp(navController: NavHostController = rememberNavController()) {
     val backstackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = backstackEntry?.destination?.route
 
-    //TODO Use res
     val navItems = listOf(
         NavItem(
             label = "Home",
