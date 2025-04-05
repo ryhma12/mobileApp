@@ -12,6 +12,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ServerValue
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.getValue
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -42,23 +43,23 @@ class ChatViewModel(chatId: String) : ViewModel() {
     }
 
     private fun setupFirebaseListeners() {
-        setupChatListener()
+        setupChatMetadataListener()
         setupMessagesListener()
     }
 
-    private fun setupChatListener() {
+    private fun setupChatMetadataListener() {
         chatRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val chatters = snapshot.child(PATH_CHATTERS).children.mapNotNull { child ->
                     child.key?.let { key ->
-                        child.getValue(ChatterInfo::class.java)?.let { value ->
+                        child.getValue<ChatterInfo>()?.let { value ->
                             key to value
                         }
                     }
                 }.toMap()
 
-                val createdAt = snapshot.child(PATH_CREATED_AT).getValue(Long::class.java) ?: 0L
-                val updatedAt = snapshot.child(PATH_UPDATED_AT).getValue(Long::class.java) ?: 0L
+                val createdAt = snapshot.child(PATH_CREATED_AT).getValue<Long>() ?: 0L
+                val updatedAt = snapshot.child(PATH_UPDATED_AT).getValue<Long>() ?: 0L
 
                 _chat.update { current ->
                     current.copy(
@@ -70,7 +71,7 @@ class ChatViewModel(chatId: String) : ViewModel() {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Log.e(TAG, "Chat info listener cancelled: ${error.message}")
+                Log.e(TAG, "Chat metadata listener cancelled: ${error.message}")
             }
         })
     }
@@ -94,12 +95,11 @@ class ChatViewModel(chatId: String) : ViewModel() {
                 Log.e(TAG, "Messages listener cancelled: ${error.message}")
             }
             private fun handleMessageUpdate(snapshot: DataSnapshot) {
-                val message = snapshot.getValue(Message::class.java)
+                val message = snapshot.getValue<Message>()
                 message?.let{ updateMessageInChat(it) }
             }
         })
     }
-
     private fun updateMessageInChat(message: Message) {
         _chat.update { current ->
             val messages = current.messages.toMutableList().apply {
@@ -122,12 +122,12 @@ class ChatViewModel(chatId: String) : ViewModel() {
 
     fun sendMessage(text: String, senderId: String) {
         viewModelScope.launch {
+            // Generates id for message
             val messageId = messagesRef.push().key
             if (messageId == null) {
                 Log.e(TAG, "Cant get push key")
                 return@launch
             }
-
             val newMessage = Message(
                 messageId = messageId,
                 content = text,
@@ -138,11 +138,6 @@ class ChatViewModel(chatId: String) : ViewModel() {
                 "$PATH_MESSAGES/$messageId" to newMessage,
                 PATH_UPDATED_AT to ServerValue.TIMESTAMP
             )
-
-            if (_chat.value.messages.isEmpty() && _chat.value.createdAt == 0L) {
-                updates[PATH_CREATED_AT] = ServerValue.TIMESTAMP
-            }
-
             try {
                 chatRef.updateChildren(updates).await()
                 Log.d(TAG, "Message sent! id: ${newMessage.messageId}")
