@@ -96,11 +96,8 @@ class ContactsViewModel : ViewModel() {
             )
         )
 
-        val updates = hashMapOf<String, Any>(
-            "$PATH_CHATS/$chatId" to chatMetaData,
-        )
         return try {
-            db.reference.updateChildren(updates).await()
+            chatsRef.child(chatId).setValue(chatMetaData).await()
             chatId
         } catch (e: Exception) {
             Log.e(TAG, "Error creating chat for chatId: $chatId", e)
