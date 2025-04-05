@@ -1,5 +1,6 @@
 package com.example.mobileapp
 
+import android.util.Log
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -24,7 +25,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.mobileapp.ui.screens.chat.ChatScreen
-import com.example.mobileapp.ui.screens.ContactsScreen
+import com.example.mobileapp.ui.screens.contacts.ContactsScreen
 import com.example.mobileapp.ui.screens.HomeScreen
 import com.example.mobileapp.ui.screens.LoginScreen
 import com.example.mobileapp.ui.screens.MatchScreen
@@ -37,6 +38,7 @@ import com.example.mobileapp.ui.shared.TopBar
 fun MobileApp(navController: NavHostController = rememberNavController()) {
     val backstackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = backstackEntry?.destination?.route
+
 
     val navItems = listOf(
         NavItem(
@@ -109,11 +111,15 @@ fun MobileApp(navController: NavHostController = rememberNavController()) {
             composable("search_route") { SearchScreen(navController) }
             composable("contacts_route") { ContactsScreen(navController) }
             composable(
-                "chat_route/{id}",
-                arguments = listOf(navArgument("id") { type = NavType.IntType })
+                "chat_route/{chatId}",
+                arguments = listOf(navArgument("chatId") { type = NavType.StringType })
             ) { backStackEntry ->
-                val contactId = backStackEntry.arguments?.getInt("id") ?: 0
-                ChatScreen(contactId = contactId)
+                val chatId = backStackEntry.arguments?.getString("chatId")
+                if(chatId != null){
+                    ChatScreen(chatId = chatId)
+                } else {
+                    Log.d("NavHost", "No chatId found")
+                }
             }
             composable("match_route") { MatchScreen(navController) }
             composable("settings_route") { SettingsScreen(navController) }

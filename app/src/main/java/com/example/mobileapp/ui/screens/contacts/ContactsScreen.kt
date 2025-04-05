@@ -1,5 +1,6 @@
-package com.example.mobileapp.ui.screens
+package com.example.mobileapp.ui.screens.contacts
 
+import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
@@ -20,6 +21,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
@@ -27,15 +29,16 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.mobileapp.R
 import com.example.mobileapp.model.Contact
-
+import kotlinx.coroutines.launch
 
 @Composable
 fun ContactsScreen(navController: NavController) {
     val viewModel = ContactsViewModel()
     val contacts by viewModel.contacts.collectAsState()
+
     LazyColumn(modifier = Modifier.fillMaxSize()) {
         items(contacts) {
-            ContactItem(navController, contact = it)
+            ContactItem(navController, contact = it, viewModel = viewModel)
         }
     }
 }
@@ -44,8 +47,10 @@ fun ContactsScreen(navController: NavController) {
 fun ContactItem(
     navController: NavController,
     contact: Contact,
+    viewModel: ContactsViewModel,
     modifier: Modifier = Modifier,
 ){
+    val scope = rememberCoroutineScope()
     Card(modifier = modifier) {
         Column (modifier = Modifier){
             Row(
@@ -56,7 +61,18 @@ fun ContactItem(
                 ProfilePic(contact.profilePic)
                 ContactInfo(contact.name)
                 Spacer(Modifier.weight(1f))
-                ContactItemButton( onClick={ navController.navigate("chat_route/${contact.id}")  })
+                ContactItemButton(
+                    onClick = {
+                        scope.launch {
+                            try {
+                                val chatId = viewModel.getOrCreateChat(contact.uid)
+                                navController.navigate("chat_route/${chatId}")
+                            } catch (e: Exception) {
+                                Log.e("ContactItem", "Failed to open chat",e)
+                            }
+                        }
+                    }
+                )
             }
         }
     }
@@ -104,4 +120,3 @@ fun ProfilePic(
         contentDescription = null
     )
 }
-
