@@ -1,9 +1,10 @@
 package com.example.mobileapp.model
 
 import androidx.annotation.DrawableRes
+import com.example.mobileapp.R
 
 data class Contact(
-    val id: Int,
-    @DrawableRes val profilePic: Int,
+    val uid: String,
+    @DrawableRes val profilePic: Int = R.drawable.bioplaceholder,
     val name: String,
 )
