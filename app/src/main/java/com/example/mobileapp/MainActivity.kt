@@ -14,7 +14,6 @@ import androidx.core.app.NotificationManagerCompat
 import com.example.mobileapp.ui.screens.CHANNEL_ID
 import com.example.mobileapp.ui.screens.NOTIF_ID
 import com.example.mobileapp.ui.theme.MobileAppTheme
-import com.google.firebase.FirebaseApp
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

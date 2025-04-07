@@ -44,6 +44,7 @@ dependencies {
     implementation(libs.firebase.bom)
     implementation(libs.androidx.material)
     implementation(libs.androidx.navigation.compose)
+    implementation (libs.gson)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -57,6 +58,7 @@ dependencies {
     implementation(libs.firebase.auth.ktx)
     implementation(libs.firebase.crashlytics.buildtools)
     implementation(libs.firebase.firestore.ktx)
+    implementation(libs.firebase.database.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

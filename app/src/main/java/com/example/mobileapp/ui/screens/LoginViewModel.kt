@@ -49,8 +49,6 @@ class LoginViewModel : ViewModel() {
                                 _authState.value = AuthState.Error(exception.message ?: "something went wrong")
                             }
                     }
-
-                    _authState.value = AuthState.Success(firebaseAuth.currentUser)
                 }else{
                     _authState.value = AuthState.Error(task.exception?.message ?: "Something went wrong")
                 }
