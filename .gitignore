@@ -13,3 +13,6 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# backend
+/backend/node_modules
