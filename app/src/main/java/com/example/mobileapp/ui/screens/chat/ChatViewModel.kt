@@ -43,11 +43,11 @@ class ChatViewModel(chatId: String) : ViewModel() {
     }
 
     private fun setupFirebaseListeners() {
-        setupChatMetadataListener()
+        //setupChatMetadataListener()
         setupMessagesListener()
     }
 
-    private fun setupChatMetadataListener() {
+    /*private fun setupChatMetadataListener() {
         chatRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val chatters = snapshot.child(PATH_CHATTERS).children.mapNotNull { child ->
@@ -60,7 +60,6 @@ class ChatViewModel(chatId: String) : ViewModel() {
 
                 val createdAt = snapshot.child(PATH_CREATED_AT).getValue<Long>() ?: 0L
                 val updatedAt = snapshot.child(PATH_UPDATED_AT).getValue<Long>() ?: 0L
-
                 _chat.update { current ->
                     current.copy(
                         chatters = chatters,
@@ -69,12 +68,11 @@ class ChatViewModel(chatId: String) : ViewModel() {
                     )
                 }
             }
-
             override fun onCancelled(error: DatabaseError) {
                 Log.e(TAG, "Chat metadata listener cancelled: ${error.message}")
             }
         })
-    }
+    }*/
 
     private fun setupMessagesListener() {
         messagesRef.addChildEventListener(object : ChildEventListener {
