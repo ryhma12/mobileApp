@@ -32,21 +32,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.layout.padding
+import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 
 @Composable
-fun SearchScreen(navController: NavController) {
+fun SearchScreen(navController: NavController, viewModel: SearchViewModel = viewModel()) {
     var searchInput by remember { mutableStateOf("") }
-
-    var testUsers = listOf("k", "a", "j","k", "a",
-        "j","k", "a",
-        "j","k", "a",
-        "j","k", "a",
-        "j","k", "a",
-        "j","k", "a",
-        "j","k", "a",
-        "j","k", "a",
-        "j")
+    val users by viewModel.filteredUsers.collectAsState()
 
     Box(modifier = Modifier.background(color = Color(0xFF476A6F)).fillMaxSize()) {
         Column(
@@ -62,7 +55,11 @@ fun SearchScreen(navController: NavController) {
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(0.8f).fillMaxHeight(),
                     value = searchInput,
-                    onValueChange = { searchInput = it },
+                    onValueChange =
+                    {
+                        searchInput = it
+                        viewModel.onQueryChange(it)
+                    },
                     label = { Text("Search...") },
                     singleLine = true,
                     colors = TextFieldDefaults.colors(
@@ -72,7 +69,9 @@ fun SearchScreen(navController: NavController) {
                 )
                 Spacer(modifier = Modifier.size(8.dp))
                 IconButton(
-                    onClick = {  },
+                    onClick = {
+                        viewModel.onQueryChange(searchInput)
+                    },
                     modifier = Modifier
                         .background(color = Color.LightGray, shape = CircleShape)
                         .size(48.dp)
@@ -88,9 +87,9 @@ fun SearchScreen(navController: NavController) {
                 contentPadding = PaddingValues(16.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                items(testUsers) { user ->
+                items(users) { user ->
                     Text(
-                        text = user,
+                        text = user.username,
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(56.dp)
