@@ -13,7 +13,7 @@ import androidx.navigation.NavController
 
 @Composable
 fun MatchScreen(navController: NavController) {
-    Box(modifier = Modifier.background(color = Color.Red).fillMaxSize()) {
+    Box(modifier = Modifier.background(color = Color.Cyan).fillMaxSize()) {
         Text("Matches", modifier = Modifier.align(Alignment.Center), fontSize = 32.sp)
     }
 }

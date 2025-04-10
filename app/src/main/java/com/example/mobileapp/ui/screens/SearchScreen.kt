@@ -37,6 +37,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 
 @Composable
+
 fun SearchScreen(navController: NavController, viewModel: SearchViewModel = viewModel()) {
     var searchInput by remember { mutableStateOf("") }
     val users by viewModel.filteredUsers.collectAsState()
