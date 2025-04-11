@@ -10,10 +10,13 @@ import android.content.Context
 import android.content.Context.NOTIFICATION_SERVICE
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
+import android.widget.ImageButton
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -33,6 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -43,39 +47,35 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.TaskStackBuilder
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
+import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.NavController
 import com.example.mobileapp.MainActivity
 import com.example.mobileapp.R
-
-val CHANNEL_ID="ChannelId"
-val CHANNEL_NAME="ChannelName"
-val NOTIF_ID=0
 
 
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 fun HomeScreen(navController: NavController) {
     Box(modifier = Modifier.background(color = Color.Cyan).fillMaxSize()) {
-
         val context = LocalContext.current
-        val notifManager = NotificationManagerCompat.from(context)
+        //below are current placeholders for the links
+        val igurl = "https://www.instagram.com/oamk_ouas/?hl=fi"
+        val ig = Intent(Intent.ACTION_VIEW)
+        ig.data = Uri.parse(igurl)
+        val twitchurl = "https://www.twitch.tv/"
+        val twitch = Intent(Intent.ACTION_VIEW)
+        twitch.data = Uri.parse(twitchurl)
+        val twitterurl = "https://x.com/oamk_ouas?lang=fi"
+        val twitter = Intent(Intent.ACTION_VIEW)
+        twitter.data = Uri.parse(twitterurl)
+        val youtubeurl = "https://www.youtube.com/@oamk_ouas"
+        val youtube = Intent(Intent.ACTION_VIEW)
+        youtube.data = Uri.parse(youtubeurl)
+            val tiktokurl = "https://www.tiktok.com/@oamk_ouas"
+        val tiktok = Intent(Intent.ACTION_VIEW)
+        tiktok.data = Uri.parse(tiktokurl)
 
-        // Create the notification channel
-        createNotifyChannel()
-
-        val intent = Intent(context, MainActivity::class.java)
-        val pendingIntent = TaskStackBuilder.create(context).run {
-            addNextIntentWithParentStack(intent)
-            getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
-        }
-
-        val notif = NotificationCompat.Builder(context, CHANNEL_ID)
-            .setContentTitle("Sample title")
-            .setContentText("This is a sample body notification")
-            .setSmallIcon(R.drawable.bioplaceholder)
-            .setPriority(NotificationCompat.PRIORITY_HIGH)
-            .setContentIntent(pendingIntent)
-            .build()
+        val list = mutableListOf("testi", "tagi", "miten", "menee")
 
         Box(Modifier.align(Alignment.Center)) {
             Column(verticalArrangement = Arrangement.spacedBy(30.dp)) {
@@ -92,48 +92,46 @@ fun HomeScreen(navController: NavController) {
                             painter = painterResource(R.drawable.bioplaceholder),
                             contentDescription = null,
                             modifier = Modifier.size(width = 46.dp, height = 46.dp)
+                                .clickable {  }
                         )
                         Text("Veikko Vaikuttaja", fontSize = 32.sp)
                     }
-
+                    Text("tags: $list", fontSize = 25.sp, modifier = Modifier.padding(top = 70.dp, start = 50.dp))
                     Row(
                         verticalAlignment = Alignment.Bottom,
                         horizontalArrangement = Arrangement.spacedBy(10.dp),
-                        modifier = Modifier.padding(top = 200.dp, start = 60.dp)
+                        modifier = Modifier.padding(top = 50.dp, start = 60.dp)
                     ) {
-                        Button(
-                            onClick = {
-                                // Check for the notification permission before showing it
-                                if (ContextCompat.checkSelfPermission(
-                                        context,
-                                        Manifest.permission.POST_NOTIFICATIONS
-                                    ) == PackageManager.PERMISSION_GRANTED
-                                ) {
-                                    notifManager.notify(NOTIF_ID, notif)
-                                } else {
-                                    ActivityCompat.requestPermissions(
-                                        context as Activity,
-                                        arrayOf(Manifest.permission.POST_NOTIFICATIONS),
-                                        1
-                                    )
-                                }
-                            },
+                        Image(
+                            painter = painterResource(R.drawable.instagram),
+                            contentDescription = null,
                             modifier = Modifier.size(width = 46.dp, height = 46.dp)
-                        ) {
-                            Text("X", fontSize = 5.sp)
-                        }
-                        Button(onClick = { /*TODO*/ }, modifier = Modifier.size(width = 46.dp, height = 46.dp)) {
-                            Text("Twitch")
-                        }
-                        Button(onClick = { /*TODO*/ }, modifier = Modifier.size(width = 46.dp, height = 46.dp)) {
-                            Text("YouTube")
-                        }
-                        Button(onClick = { /*TODO*/ }, modifier = Modifier.size(width = 46.dp, height = 46.dp)) {
-                            Text("Instagram")
-                        }
-                        Button(onClick = { /*TODO*/ }, modifier = Modifier.size(width = 46.dp, height = 46.dp)) {
-                            Text("TikTok")
-                        }
+                                .clickable { startActivity(context,ig,null) }
+                        )
+                        Image(
+                            painter = painterResource(R.drawable.twitch),
+                            contentDescription = null,
+                            modifier = Modifier.size(width = 46.dp, height = 46.dp)
+                                .clickable { startActivity(context,twitch,null)  }
+                        )
+                        Image(
+                            painter = painterResource(R.drawable.x_everythingapp_logo_twitter),
+                            contentDescription = null,
+                            modifier = Modifier.size(width = 46.dp, height = 46.dp)
+                                .clickable {  startActivity(context,twitter,null) }
+                        )
+                        Image(
+                            painter = painterResource(R.drawable.youtube_logo),
+                            contentDescription = null,
+                            modifier = Modifier.size(width = 46.dp, height = 46.dp)
+                                .clickable {  startActivity(context,youtube,null) }
+                        )
+                        Image(
+                            painter = painterResource(R.drawable.tiktok),
+                            contentDescription = null,
+                            modifier = Modifier.size(width = 46.dp, height = 46.dp)
+                                .clickable {  startActivity(context,tiktok,null) }
+                        )
                     }
                 }
 
@@ -149,23 +147,6 @@ fun HomeScreen(navController: NavController) {
                 }
             }
         }
-    }
-}
-
-@Composable
-private fun createNotifyChannel() {
-    val context = LocalContext.current
-
-    // Create notification channel for API >= 26 (Oreo)
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        val channel = NotificationChannel(
-            CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT
-        ).apply {
-            enableLights(true)
-        }
-
-        val manager = context.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-        manager.createNotificationChannel(channel)
     }
 }
 

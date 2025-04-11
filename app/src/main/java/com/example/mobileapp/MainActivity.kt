@@ -11,8 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import com.example.mobileapp.ui.screens.CHANNEL_ID
-import com.example.mobileapp.ui.screens.NOTIF_ID
+import com.example.mobileapp.ui.screens.HomeScreen
+
 import com.example.mobileapp.ui.theme.MobileAppTheme
 
 class MainActivity : ComponentActivity() {
