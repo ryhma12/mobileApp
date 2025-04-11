@@ -69,7 +69,7 @@ fun ContactItem(
                     .padding(dimensionResource(R.dimen.padding_small))
                     .size(width = 300.dp, height = 70.dp)
             ) {
-                ProfilePic(contact.profilePic)
+                ProfilePic(R.drawable.bioplaceholder)
                 ContactInfo(contact.name)
                 Spacer(Modifier.weight(1f))
                 Button(onClick = {}, modifier = Modifier.size(width = 46.dp, height = 46.dp) ) {
