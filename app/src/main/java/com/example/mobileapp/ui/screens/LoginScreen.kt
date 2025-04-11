@@ -37,10 +37,7 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel = viewMo
     var loginChoice by remember { mutableStateOf("login") }
     val authState by viewModel.authState.collectAsState()
 
-    Log.i("auth","authstate: $authState")
-
     LaunchedEffect(authState) {
-        Log.d("auth","authstate: $authState")
         if(authState is AuthState.Success) {
             navController.navigate("home_route") {
                 popUpTo("login_route") { inclusive = true }
