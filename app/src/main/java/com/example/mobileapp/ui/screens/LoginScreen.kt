@@ -29,34 +29,53 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import android.util.Log
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import kotlinx.coroutines.launch
 
 
 @Composable
 fun LoginScreen(navController: NavController, viewModel: LoginViewModel = viewModel()) {
     var loginChoice by remember { mutableStateOf("login") }
     val authState by viewModel.authState.collectAsState()
+    val snackbarHostState = remember { SnackbarHostState() }
+    val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(authState) {
-        if(authState is AuthState.Success) {
-            navController.navigate("home_route") {
-                popUpTo("login_route") { inclusive = true }
+        when (authState) {
+            is AuthState.Success -> {
+                navController.navigate("home_route") {
+                    popUpTo("login_route") { inclusive = true }
+                }
             }
+            is AuthState.Error -> {
+                val error = (authState as AuthState.Error).message
+                coroutineScope.launch {
+                    snackbarHostState.showSnackbar(error)
+                }
+            }
+            else -> {}
         }
     }
 
-
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color(0xFF476A6F)),
-        contentAlignment = Alignment.Center,
-
-    ) {
-        if(loginChoice == "login"){
-            Login(onLoginChoiceChange = { loginChoice = it }, viewModel = viewModel)
-        }else{
-            Register(onLoginChoiceChange = { loginChoice = it }, viewModel = viewModel)
+    Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) }
+    ) { padding ->
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color(0xFF476A6F))
+                .padding(padding),
+            contentAlignment = Alignment.Center
+        ) {
+            if (loginChoice == "login") {
+                Login(onLoginChoiceChange = { loginChoice = it }, viewModel = viewModel)
+            } else {
+                Register(onLoginChoiceChange = { loginChoice = it }, viewModel = viewModel)
+            }
         }
     }
 }
