@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -31,6 +32,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.AlertDialog
+import androidx.compose.material.Checkbox
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -139,6 +142,8 @@ fun Register(onLoginChoiceChange: (String) -> Unit, viewModel: LoginViewModel) {
     var password by remember { mutableStateOf("") }
     var verifyPassword by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
+    var tosCheck by remember { mutableStateOf(false) }
+    var showTos by remember { mutableStateOf(false) }
 
     Column(
     ) {
@@ -194,6 +199,19 @@ fun Register(onLoginChoiceChange: (String) -> Unit, viewModel: LoginViewModel) {
             )
         )
         Spacer(modifier = Modifier.height(16.dp))
+        Row (
+            modifier = Modifier.fillMaxWidth(0.8f)
+        ){
+            Text(
+                "By registering you agree to the terms of service",
+                modifier = Modifier
+                    .weight(1f)
+                    .clickable { showTos = true }
+
+            )
+            Checkbox(tosCheck, onCheckedChange = {tosCheck = it})
+        }
+        Spacer(modifier = Modifier.height(16.dp))
         Row(
             modifier = Modifier.fillMaxWidth(0.8f),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -204,9 +222,41 @@ fun Register(onLoginChoiceChange: (String) -> Unit, viewModel: LoginViewModel) {
                 modifier = Modifier.clickable { onLoginChoiceChange("login") },
                 color = Color.Blue
                 )
-            Button(onClick = { viewModel.register(email, password, userName) }) {
+            Button(onClick = {
+                    if(tosCheck && userName.isNotBlank() && email.isNotBlank() && password.isNotBlank() && verifyPassword.isNotBlank()){
+                        viewModel.register(email, password, verifyPassword, userName)
+                    }
+                },
+                enabled = tosCheck
+            ) {
                 Text("Sign up" , color = Color.White)
             }
         }
     }
+    if(showTos){
+        TosDialog(onDismiss = { showTos = false})
+    }
+}
+
+@Composable
+fun TosDialog(onDismiss: () -> Unit) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Text("Terms of Service")
+        },
+        text = {
+            Column {
+                Text("terms of service")
+                Spacer(modifier = Modifier.height(16.dp))
+                Text("more terms")
+            }
+        },
+        confirmButton = {
+            Button(onClick = onDismiss) {
+                Text("Close")
+            }
+        },
+        modifier = Modifier.fillMaxWidth(0.8f)
+    )
 }

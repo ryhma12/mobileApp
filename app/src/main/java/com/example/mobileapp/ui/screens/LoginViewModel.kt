@@ -25,8 +25,13 @@ class LoginViewModel : ViewModel() {
             }
     }
 
-    fun register(email: String, password: String, username: String) {
+    fun register(email: String, password: String,verifyPassword: String ,username: String) {
         _authState.value = AuthState.Loading
+        if(password != verifyPassword){
+            _authState.value = AuthState.Error("passwords do not match")
+            return
+        }
+
         firebaseAuth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if(task.isSuccessful) {
