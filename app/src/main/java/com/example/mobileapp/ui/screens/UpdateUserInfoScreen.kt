@@ -27,11 +27,12 @@ fun UpdateUserInfoScreen(navController: NavController, viewModel: UpdateUserInfo
 
     Column(
     ) {
+        Text("Update your bio")
         TextField(
             value = description,
             onValueChange = { description = it },
             placeholder = { Text("description") },
-            maxLines = 20,
+            maxLines = 120,
             minLines = 8,
         )
         Spacer(modifier = Modifier.height(20.dp))

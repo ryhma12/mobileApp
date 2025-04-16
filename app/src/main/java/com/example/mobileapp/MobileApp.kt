@@ -24,6 +24,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.mobileapp.ui.screens.BioScreen
 import com.example.mobileapp.ui.screens.chat.ChatScreen
 import com.example.mobileapp.ui.screens.contacts.ContactsScreen
 import com.example.mobileapp.ui.screens.HomeScreen
@@ -125,6 +126,7 @@ fun MobileApp(navController: NavHostController = rememberNavController()) {
             composable("settings_route") { SettingsScreen(navController) }
             composable("login_route") { LoginScreen(navController) }
             composable("updateUser_route") { UpdateUserInfoScreen(navController) }
+            composable("bio_route") { BioScreen(navController) }
         }
     }
 }

@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -60,6 +61,7 @@ import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.NavController
 import com.example.mobileapp.MainActivity
 import com.example.mobileapp.R
+import com.example.mobileapp.model.Account
 import com.example.mobileapp.model.Contact
 import com.example.mobileapp.ui.screens.contacts.ContactsViewModel
 
@@ -83,14 +85,16 @@ fun HomeScreen(navController: NavController) {
         }
     }
 }
+
         @Composable
         fun HomeItem(
             navController: NavController,
-            contact: Contact,
+            contact: Account,
             viewModel: HomeViewModel,
             modifier: Modifier = Modifier,
         ) {
             val context = LocalContext.current
+
             //below are current placeholders for the links
             val igurl = "https://www.instagram.com/oamk_ouas/?hl=fi"
             val ig = Intent(Intent.ACTION_VIEW)
@@ -107,7 +111,9 @@ fun HomeScreen(navController: NavController) {
             val tiktokurl = "https://www.tiktok.com/@oamk_ouas"
             val tiktok = Intent(Intent.ACTION_VIEW)
             tiktok.data = Uri.parse(tiktokurl)
-            val list = mutableListOf("testi", "tagi", "miten", "menee")
+
+            val list = mutableListOf("testi", "tagi", "miten", "menee") //placeholder list of tags
+
             Box() {
                 Column(verticalArrangement = Arrangement.spacedBy(30.dp)) {
                     Card(
@@ -134,10 +140,11 @@ fun HomeScreen(navController: NavController) {
                             fontSize = 25.sp,
                             modifier = Modifier.padding(top = 70.dp, start = 50.dp)
                         )
+                        Spacer(modifier = Modifier.weight(1f)) // using spacer, so that it doesn't push the images out of the card if the username or the list of users tags is long
                         Row(
                             verticalAlignment = Alignment.Bottom,
                             horizontalArrangement = Arrangement.spacedBy(10.dp),
-                            modifier = Modifier.padding(top = 50.dp, start = 60.dp)
+                            modifier = Modifier.padding(start = 60.dp)
                         ) {
                             Image(
                                 painter = painterResource(R.drawable.instagram),
@@ -179,12 +186,13 @@ fun HomeScreen(navController: NavController) {
                     ) {
 
                         Text(
-                            text = stringResource(R.string.bio),
+                            text = contact.description,
                             fontSize = 24.sp,
-                            modifier = Modifier.align(Alignment.End).padding(10.dp)
+                            modifier = Modifier.align(Alignment.End).padding(10.dp).clickable { navController.navigate("updateUser_route") }
                                 .verticalScroll(rememberScrollState())
                         )
                     }
+
                 }
             }
         }
