@@ -26,16 +26,15 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.mobileapp.helpers.UserHelper
 import com.example.mobileapp.model.Message
 
 @Composable
 fun ChatScreen(
-    chatId: String
+    viewModel: ChatViewModel
 ) {
     var inputMessage by remember { mutableStateOf(TextFieldValue("")) }
-
-    val viewModel = ChatViewModel(chatId = chatId)
     val chat by viewModel.chat.collectAsState()
 
     val currentUid = UserHelper().getCurrentUid()
@@ -105,5 +104,5 @@ fun ChatBubble(message: Message, isUser: Boolean) {
 @Preview(showBackground = true)
 @Composable
 fun ChatScreenPreview() {
-    ChatScreen(chatId = "123")
+    ChatScreen(ChatViewModel(chatId = "123"))
 }

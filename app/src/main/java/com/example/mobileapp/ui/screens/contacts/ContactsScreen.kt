@@ -69,7 +69,9 @@ fun ContactItem(
                         scope.launch {
                             try {
                                 val chatId = viewModel.getChat(contact)
-                                navController.navigate("chat_route/${chatId}")
+                                navController.navigate("chat_route/${chatId}") {
+                                    launchSingleTop = true
+                                }
                             } catch (e: Exception) {
                                 Log.e("ContactItem", "Failed to open chat",e)
                             }
