@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.mobileapp.R
 import com.example.mobileapp.model.Contact
@@ -33,7 +34,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun ContactsScreen(navController: NavController) {
-    val viewModel = ContactsViewModel()
+    val viewModel: ContactsViewModel = viewModel()
     val contacts by viewModel.contacts.collectAsState()
 
     LazyColumn(
