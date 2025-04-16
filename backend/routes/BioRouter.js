@@ -1,9 +1,9 @@
 import { Router } from "express";
 import { auth } from "../firebase/auth.js";
-import { generateMatches } from "../controllers/MatchesController.js";
+import { validateBio } from "../controllers/BioController.js";
 
 const router = Router();
 
-router.post("/generate", auth, generateMatches);
+router.post("/validate", validateBio);
 
 export default router;
