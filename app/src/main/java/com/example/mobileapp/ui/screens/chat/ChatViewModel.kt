@@ -2,16 +2,17 @@ package com.example.mobileapp.ui.screens.chat
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.CreationExtras
 import com.example.mobileapp.model.Chat
-import com.example.mobileapp.model.ChatterInfo
 import com.example.mobileapp.model.Message
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ServerValue
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.getValue
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -25,13 +26,27 @@ class ChatViewModel(chatId: String) : ViewModel() {
     private val _chat = MutableStateFlow(Chat(chatId = chatId))
     val chat: StateFlow<Chat> = _chat.asStateFlow()
 
-    private companion object {
-        const val TAG = "ChatViewModel"
-        const val PATH_CHATS = "chats"
-        const val PATH_CHATTERS = "chatters"
-        const val PATH_MESSAGES = "messages"
-        const val PATH_CREATED_AT = "createdAt"
-        const val PATH_UPDATED_AT = "updatedAt"
+    companion object {
+        private const val TAG = "ChatViewModel"
+        private const val PATH_CHATS = "chats"
+        private const val PATH_CHATTERS = "chatters"
+        private const val PATH_MESSAGES = "messages"
+        private const val PATH_CREATED_AT = "createdAt"
+        private const val PATH_UPDATED_AT = "updatedAt"
+
+        val Factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory {
+            @Suppress("UNCHECKED_CAST")
+            override fun <T : ViewModel> create(
+                modelClass: Class<T>,
+                extras: CreationExtras
+            ): T {
+                // Create a SavedStateHandle for this ViewModel from extras
+                val savedStateHandle = extras.createSavedStateHandle()
+
+                val chatId = savedStateHandle.get<String>("chatId") !!
+                return ChatViewModel(chatId) as T
+            }
+        }
     }
 
     private val db = FirebaseDatabase.getInstance()

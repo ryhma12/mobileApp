@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -33,6 +34,7 @@ import com.example.mobileapp.ui.screens.MatchScreen
 import com.example.mobileapp.ui.screens.SearchScreen
 import com.example.mobileapp.ui.screens.SettingsScreen
 import com.example.mobileapp.ui.screens.UpdateUserInfoScreen
+import com.example.mobileapp.ui.screens.chat.ChatViewModel
 import com.example.mobileapp.ui.shared.TopBar
 
 @Composable
@@ -114,13 +116,10 @@ fun MobileApp(navController: NavHostController = rememberNavController()) {
             composable(
                 "chat_route/{chatId}",
                 arguments = listOf(navArgument("chatId") { type = NavType.StringType })
-            ) { backStackEntry ->
-                val chatId = backStackEntry.arguments?.getString("chatId")
-                if(chatId != null){
-                    ChatScreen(chatId = chatId)
-                } else {
-                    Log.d("NavHost", "No chatId found")
-                }
+            ) {
+                // Passes chatId in the extras
+                val viewModel: ChatViewModel = viewModel(factory = ChatViewModel.Factory)
+                ChatScreen(viewModel)
             }
             composable("match_route") { MatchScreen(navController) }
             composable("settings_route") { SettingsScreen(navController) }

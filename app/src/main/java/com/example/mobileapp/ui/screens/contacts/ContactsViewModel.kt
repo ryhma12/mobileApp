@@ -87,7 +87,7 @@ class ContactsViewModel : ViewModel() {
     }
 
     private suspend fun createChat(chatId: String, selectedContact: Contact): String {
-        val chatMetaData = hashMapOf(
+        val chatMetaData = mapOf(
             PATH_CREATED_AT to ServerValue.TIMESTAMP,
             PATH_UPDATED_AT to ServerValue.TIMESTAMP,
             PATH_CHATTERS to mapOf(
@@ -97,7 +97,7 @@ class ContactsViewModel : ViewModel() {
         )
 
         return try {
-            chatsRef.child(chatId).setValue(chatMetaData).await()
+            chatsRef.child(chatId).updateChildren(chatMetaData).await()
             chatId
         } catch (e: Exception) {
             Log.e(TAG, "Error creating chat for chatId: $chatId", e)
