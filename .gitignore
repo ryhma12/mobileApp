@@ -16,3 +16,5 @@ local.properties
 
 # backend
 /backend/node_modules
+/backend/.env
+.idea/studiobot.xml
