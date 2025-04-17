@@ -68,9 +68,9 @@ import com.example.mobileapp.ui.screens.contacts.ContactsViewModel
 
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
-fun BioScreen(navController: NavController) {
+fun BioScreen(navController: NavController, uid: String) {
     Box(modifier = Modifier.background(color = Color.Cyan).fillMaxSize()) {
-        val viewModel = BioViewModel()
+        val viewModel = BioViewModel(uid = uid)
         val contacts by viewModel.contacts.collectAsState()
         LazyColumn(
             modifier = Modifier.align(Alignment.Center)

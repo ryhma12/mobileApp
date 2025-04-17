@@ -70,7 +70,8 @@ fun MatchItem(
                     Spacer(Modifier.weight(1f))
                     ContactItemButton(
                         onClick = {
-                                    navController.navigate("bio_route")
+                            val uid= contact.uid
+                                    navController.navigate("bio_route/${uid}")
                         }
                     )
                 }

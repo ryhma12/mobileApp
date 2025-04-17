@@ -16,7 +16,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 
 
-class BioViewModel : ViewModel() {
+class BioViewModel(uid: String) : ViewModel() {
     //could be improved much with like, bio string, links to social medias etc...
     //have to make do with this now
     private val _contacts = MutableStateFlow<List<Account>>(emptyList())
@@ -38,16 +38,16 @@ class BioViewModel : ViewModel() {
     private val chatsRef = db.getReference(PATH_CHATS)
 
     init {
-        loadContacts()
+        loadContacts(uid=uid)
     }
 
-    private fun loadContacts() {
+    private fun loadContacts(uid: String) {
         viewModelScope.launch {
             try {
                 val snapshot = usersCollection.get().await()
                 _contacts.value = snapshot.documents.mapNotNull { document ->
                     // Filters only yourself
-                    val userId = document.id.takeIf { it == currentUid }
+                    val userId = document.id.takeIf { uid == it }
                     userId?.let {
                         Account(
                             uid = it,
