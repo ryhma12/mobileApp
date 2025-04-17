@@ -125,7 +125,19 @@ fun MobileApp(navController: NavHostController = rememberNavController()) {
             composable("settings_route") { SettingsScreen(navController) }
             composable("login_route") { LoginScreen(navController) }
             composable("updateUser_route") { UpdateUserInfoScreen(navController) }
-            composable("bio_route") { BioScreen(navController) }
+
+            composable(
+                "bio_route/{uid}",
+                arguments = listOf(navArgument("uid") { type = NavType.StringType })
+            ) { backStackEntry ->
+                val uid = backStackEntry.arguments?.getString("uid")
+                if(uid != null){
+                    BioScreen(navController,uid = uid)
+                } else {
+                    Log.d("NavHost", "No uid found")
+                }
+            }
+
         }
     }
 }
