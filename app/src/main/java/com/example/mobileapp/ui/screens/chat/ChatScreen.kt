@@ -9,11 +9,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -26,7 +29,6 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.mobileapp.helpers.UserHelper
 import com.example.mobileapp.model.Message
 
@@ -39,6 +41,13 @@ fun ChatScreen(
 
     val currentUid = UserHelper().getCurrentUid()
 
+    val listState: LazyListState = rememberLazyListState()
+    LaunchedEffect(chat.messages.lastIndex) {
+        if(chat.messages.isNotEmpty()){
+            listState.scrollToItem(chat.messages.lastIndex)
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -46,7 +55,7 @@ fun ChatScreen(
             .padding(8.dp)
     ) {
         LazyColumn(
-            /*state*/
+            state = listState,
             modifier = Modifier
                 .weight(1f)
                 .fillMaxWidth()
