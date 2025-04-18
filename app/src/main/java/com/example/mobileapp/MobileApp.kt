@@ -32,6 +32,7 @@ import com.example.mobileapp.ui.screens.contacts.ContactsScreen
 import com.example.mobileapp.ui.screens.HomeScreen
 import com.example.mobileapp.ui.screens.LoginScreen
 import com.example.mobileapp.ui.screens.MatchScreen
+import com.example.mobileapp.ui.screens.ReportUserScreen
 import com.example.mobileapp.ui.screens.SearchScreen
 import com.example.mobileapp.ui.screens.SettingsScreen
 import com.example.mobileapp.ui.screens.UpdateUserInfoScreen
@@ -138,7 +139,7 @@ fun MobileApp(navController: NavHostController = rememberNavController(), onSign
                     Log.d("NavHost", "No uid found")
                 }
             }
-
+            composable("ReportUser_route") { ReportUserScreen(navController) }
         }
     }
 }
