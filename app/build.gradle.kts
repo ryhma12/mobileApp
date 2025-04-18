@@ -45,6 +45,8 @@ dependencies {
     implementation(libs.androidx.material)
     implementation(libs.androidx.navigation.compose)
     implementation (libs.gson)
+    implementation(libs.play.services.auth)
+    implementation("androidx.activity:activity-ktx:1.10.1")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
