@@ -70,8 +70,8 @@ fun MatchItem(
                     Spacer(Modifier.weight(1f))
                     ContactItemButton(
                         onClick = {
-                            val uid= contact.uid
-                                    navController.navigate("bio_route/${uid}")
+                            val uid= contact.uid //getting the current uid of the user
+                                    navController.navigate("bio_route/${uid}") //passing the uid to the bioscreen, so that we can get the proper info from the right user
                         }
                     )
                 }
@@ -88,6 +88,7 @@ private fun ContactItemButton(
     IconButton(
         onClick = onClick,
         modifier = modifier
+
     ) {
         Icon(
             imageVector = Icons.Filled.Add,

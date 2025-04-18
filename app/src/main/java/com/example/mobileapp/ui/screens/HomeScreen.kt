@@ -113,7 +113,8 @@ fun HomeScreen(navController: NavController) {
             tiktok.data = Uri.parse(tiktokurl)
 
             val list = mutableListOf("testi", "tagi", "miten", "menee") //placeholder list of tags
-
+            val minPrice: Float = 570.5F
+            val maxPrice: Float = 1500.5F
             Box() {
                 Column(verticalArrangement = Arrangement.spacedBy(30.dp)) {
                     Card(
@@ -135,11 +136,23 @@ fun HomeScreen(navController: NavController) {
 
                             Text(contact.name, fontSize = 32.sp)
                         }
-                        Text(
-                            "tags: $list",
-                            fontSize = 25.sp,
-                            modifier = Modifier.padding(top = 70.dp, start = 50.dp)
-                        )
+                        Column() {
+                            Text(
+                                "tags: $list",
+                                fontSize = 25.sp,
+                                modifier = Modifier.padding(top = 30.dp, start = 50.dp)
+                            )
+                            Text(
+                                "Min price: $minPrice" + "€",
+                                fontSize = 25.sp,
+                                modifier = Modifier.padding(top = 10.dp,start = 50.dp)
+                            )
+                            Text(
+                                "Max price: $maxPrice" + "€",
+                                fontSize = 25.sp,
+                                modifier = Modifier.padding(top = 10.dp,start = 50.dp)
+                            )
+                        }
                         Spacer(modifier = Modifier.weight(1f)) // using spacer, so that it doesn't push the images out of the card if the username or the list of users tags is long
                         Row(
                             verticalAlignment = Alignment.Bottom,

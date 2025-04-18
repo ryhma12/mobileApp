@@ -52,7 +52,7 @@ class BioViewModel(uid: String) : ViewModel() {
                         Account(
                             uid = it,
                             name = document.getString("username") ?: "Unknown",
-                            description = document.getString("description") ?: "-"
+                            description = document.getString("description") ?: "-",
                         )
                     }
                 }
