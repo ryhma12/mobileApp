@@ -53,6 +53,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             MobileAppTheme {
                MobileApp(
+                   viewModel = settingsViewModel,
                    onSignInClick = {
                        lifecycleScope.launch {
                            val intentSender = settingsViewModel.signIn()
@@ -70,7 +71,7 @@ class MainActivity : ComponentActivity() {
 }
 
 
-
+/*
 @Preview
 @Composable
 fun MobileAppPreview() {
@@ -78,4 +79,4 @@ fun MobileAppPreview() {
         MobileApp()
     }
 }
-
+*/

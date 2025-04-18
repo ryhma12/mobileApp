@@ -1,5 +1,7 @@
 package com.example.mobileapp.ui.screens
 
+import SettingsViewModel
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,12 +27,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 
 @Composable
-fun SettingsScreen(navController: NavController, onSignInClick: () -> Unit) {
-    val context = LocalContext.current
+fun SettingsScreen(navController: NavController, onSignInClick: () -> Unit, viewModel: SettingsViewModel) {
+
+    Log.d("Linked", viewModel.isLinked().toString())
 
     Box(modifier = Modifier.background(color = Color.Red).fillMaxSize()) {
         Button(onClick = { onSignInClick() }) {
-            Text("Sign in with google")
+            Text(text = if(viewModel.isLinked()) "google account linked" else "Sign in with google" )
         }
     }
 }

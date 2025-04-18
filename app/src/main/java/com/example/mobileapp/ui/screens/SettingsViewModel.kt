@@ -1,4 +1,3 @@
-
 import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
@@ -25,42 +24,71 @@ class SettingsViewModel(
     private val _state = MutableStateFlow(googleSignInState())
     val state = _state.asStateFlow()
 
-    suspend fun signIn() : IntentSender? {
-        val result = try{
-            oneTapClient.beginSignIn(
-                buildSignInRequest()
-            ).await()
-        }catch (e: Exception){
+    val currentUser = auth.currentUser
+
+    suspend fun signIn(): IntentSender? {
+        val result = try {
+            oneTapClient.beginSignIn(buildSignInRequest()).await()
+        } catch (e: Exception) {
             e.printStackTrace()
-            if(e is CancellationException) throw e
+            if (e is CancellationException) throw e
             null
         }
-
         return result?.pendingIntent?.intentSender
+    }
+
+    fun isLinked(): Boolean {
+        return currentUser?.providerData?.any { it.providerId == "google.com" } == true
     }
 
     suspend fun signInWithIntent(intent: Intent): GoogleAccount {
         val credential = oneTapClient.getSignInCredentialFromIntent(intent)
         val googleIdToken = credential.googleIdToken
         val googleCredentials = GoogleAuthProvider.getCredential(googleIdToken, null)
-        return try{
+
+        return try {
             val user = auth.signInWithCredential(googleCredentials).await().user
             GoogleAccount(
                 data = user?.run {
-                   UserData(
+                    UserData(
                         userId = uid,
                         username = displayName
                     )
                 },
                 errorMessage = null
             )
-        }catch (e: Exception) {
+        } catch (e: Exception) {
             e.printStackTrace()
-            if(e is CancellationException) throw e
-            GoogleAccount(
-                data = null,
-                errorMessage = e.message
-            )
+            if (e is CancellationException) throw e
+            GoogleAccount(data = null, errorMessage = e.message)
+        }
+    }
+
+    suspend fun startGoogleAccountLink(): IntentSender? {
+        return try {
+            val result = oneTapClient.beginSignIn(buildSignInRequest()).await()
+            result.pendingIntent.intentSender
+        } catch (e: Exception) {
+            e.printStackTrace()
+            if (e is CancellationException) throw e
+            null
+        }
+    }
+
+    suspend fun linkGoogleAccountFromIntent(intent: Intent): String? {
+        val currentUser = auth.currentUser ?: return "No user signed in"
+
+        return try {
+            val credential = oneTapClient.getSignInCredentialFromIntent(intent)
+            val googleIdToken = credential.googleIdToken ?: return "No Google ID token"
+            val googleCredential = GoogleAuthProvider.getCredential(googleIdToken, null)
+
+            currentUser.linkWithCredential(googleCredential).await()
+            null
+        } catch (e: Exception) {
+            e.printStackTrace()
+            if (e is CancellationException) throw e
+            e.message
         }
     }
 
@@ -68,9 +96,9 @@ class SettingsViewModel(
         try {
             oneTapClient.signOut().await()
             auth.signOut()
-        }catch (e: Exception) {
+        } catch (e: Exception) {
             e.printStackTrace()
-            if(e is CancellationException) throw e
+            if (e is CancellationException) throw e
         }
     }
 
@@ -81,7 +109,7 @@ class SettingsViewModel(
         )
     }
 
-    private fun buildSignInRequest() : BeginSignInRequest {
+    private fun buildSignInRequest(): BeginSignInRequest {
         return BeginSignInRequest.Builder()
             .setGoogleIdTokenRequestOptions(
                 GoogleIdTokenRequestOptions.builder()
