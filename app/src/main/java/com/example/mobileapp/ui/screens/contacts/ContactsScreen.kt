@@ -68,7 +68,8 @@ fun ContactItem(
                     onClick = {
                         scope.launch {
                             try {
-                                val chatId = viewModel.getChat(contact)
+                                //left composition error
+                                val chatId = viewModel.getChat(contact) //too slow as the navigate cancels the execution
                                 navController.navigate("chat_route/${chatId}") {
                                     launchSingleTop = true
                                 }
