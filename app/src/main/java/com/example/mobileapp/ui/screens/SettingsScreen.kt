@@ -18,14 +18,19 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 
 @Composable
-fun SettingsScreen(navController: NavController) {
+fun SettingsScreen(navController: NavController, onSignInClick: () -> Unit) {
+    val context = LocalContext.current
+
     Box(modifier = Modifier.background(color = Color.Red).fillMaxSize()) {
-        Text("Settings screen", modifier = Modifier.align(Alignment.Center), fontSize = 32.sp)
+        Button(onClick = { onSignInClick() }) {
+            Text("Sign in with google")
+        }
     }
 }
