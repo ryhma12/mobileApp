@@ -12,4 +12,33 @@
         Praesent quam ipsum, accumsan et quam fringilla, eleifend vulputate justo.</string>
     <string name="channel_name">testikanava</string>
     <string name="channel_description">tama on testikanava</string>
+    <string name="web_client_id">439902335805-jd7v7c1gt5jornhmpjtg6eppo3rhd6mo.apps.googleusercontent.com</string>
+    <string name="tos">
+        1. Intellectual property:
+        Ui, logo and and other content that is in the app is the intellectual property of the creatorcash
+        2. Account termination:
+        2.1 By you.
+        You can delete your account and/or unsubscribe  from our service anytime, by doing 	so all of your data will be deleted and if you ever want to come back to the service, you need to make a new account.
+        2.2 By us.
+        We may terminate or suspend your account or subscription for any of the following reasons.
+        (a) You fail to pay your fees for the subscription 30 days past due date; (b) you fail to comply with these terms of service;
+        (c)you use the service in a way that causes legal liability to us or disrupts others use of the service;
+        (d)other reasonable reason, that the company deems fit.
+        3.Governing law:
+        This agreement shall be governed by the laws of Finland. The parties irrevocably agree that the district court of Oulu have exclusive jurisdiction to settle any dispute
+        which may arise out of, under, or in connection with these terms of service.
+        4.Unprohibited activities:
+        As a condition of use you agree not to use our service in an unlawful or a unprohibited way.
+        By the way of example, but not limited to, you agree not to use our service to:
+        1.Abuse, harass, intimidate or impersonate anybody.
+        2.Post or transit content, that can be seen as libelous,defamatory,obscene,harmful,pornographic,abusive,offensive,profane or copyright infringing.
+        3.Any purpose that is unlawful in the jurisdiction that you reside.
+        4.Create multiple accounts.
+        5.Post or transit "spam" to any user
+        5.DISCLAIMER OF WARRANTIES AND LIMITATION OF LIABILITY:
+        5.1. THE SERVICE IS PROVIDED "AS IS" AND "AS AVAILABLE" AND THE COMPANY DOES NOT MAKE ANY WARRANTIES
+        OR GUARANTEES(INCLUDING, BUT NO LIMITED TO, THAT ACCESS TO, OR USE OF, THE APPLICATION WILL BE UNINTERRUPTED, ABSOLUTELY SECURE, COMPLETE, ACCURATE OR ERROR FREE).
+        IN ADDITION THE COMPANY DOES NOT IN ANY WAY TAKE LEGAL RESPONSIBILITY THAT YOU WILL MAKE A CONTRACT WITH THE ENTITY THAT THE USER CLAIMS TO BE
+        AND THE IMPLEMENTATION OF THE CONTRACT IS FULLY AT THE RISK AND RESPONSIBILITY OF THE USERS.
+ </string>
 </resources>

@@ -1,5 +1,6 @@
 package com.example.mobileapp
 
+import SettingsViewModel
 import android.util.Log
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -31,6 +32,7 @@ import com.example.mobileapp.ui.screens.contacts.ContactsScreen
 import com.example.mobileapp.ui.screens.HomeScreen
 import com.example.mobileapp.ui.screens.LoginScreen
 import com.example.mobileapp.ui.screens.MatchScreen
+import com.example.mobileapp.ui.screens.ReportUserScreen
 import com.example.mobileapp.ui.screens.SearchScreen
 import com.example.mobileapp.ui.screens.SettingsScreen
 import com.example.mobileapp.ui.screens.UpdateUserInfoScreen
@@ -38,7 +40,7 @@ import com.example.mobileapp.ui.screens.chat.ChatViewModel
 import com.example.mobileapp.ui.shared.TopBar
 
 @Composable
-fun MobileApp(navController: NavHostController = rememberNavController()) {
+fun MobileApp(navController: NavHostController = rememberNavController(), onSignInClick: () -> Unit = {}, viewModel: SettingsViewModel) {
     val backstackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = backstackEntry?.destination?.route
 
@@ -122,7 +124,7 @@ fun MobileApp(navController: NavHostController = rememberNavController()) {
                 ChatScreen(viewModel)
             }
             composable("match_route") { MatchScreen(navController) }
-            composable("settings_route") { SettingsScreen(navController) }
+            composable("settings_route") { SettingsScreen(navController ,onSignInClick, viewModel = viewModel) }
             composable("login_route") { LoginScreen(navController) }
             composable("updateUser_route") { UpdateUserInfoScreen(navController) }
 
@@ -137,7 +139,7 @@ fun MobileApp(navController: NavHostController = rememberNavController()) {
                     Log.d("NavHost", "No uid found")
                 }
             }
-
+            composable("ReportUser_route") { ReportUserScreen(navController) }
         }
     }
 }

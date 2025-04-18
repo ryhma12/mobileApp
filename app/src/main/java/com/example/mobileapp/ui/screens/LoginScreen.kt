@@ -32,11 +32,15 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Checkbox
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.ui.res.stringResource
+import com.example.mobileapp.R
 import kotlinx.coroutines.launch
 
 
@@ -247,9 +251,7 @@ fun TosDialog(onDismiss: () -> Unit) {
         },
         text = {
             Column {
-                Text("terms of service")
-                Spacer(modifier = Modifier.height(16.dp))
-                Text("more terms")
+                Text(text = stringResource(R.string.tos),modifier = Modifier.verticalScroll(rememberScrollState()))
             }
         },
         confirmButton = {
@@ -257,6 +259,6 @@ fun TosDialog(onDismiss: () -> Unit) {
                 Text("Close")
             }
         },
-        modifier = Modifier.fillMaxWidth(0.8f)
+        modifier = Modifier.fillMaxWidth(1.0F)
     )
 }

@@ -54,29 +54,32 @@ fun ContactItem(
     modifier: Modifier = Modifier,
 ){
     val scope = rememberCoroutineScope()
-    Card(modifier = modifier.padding(dimensionResource(R.dimen.padding_small))) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(dimensionResource(R.dimen.padding_small))
-        ) {
-            ProfilePic(contact.profilePic)
-            ContactInfo(contact.name)
-            Spacer(Modifier.weight(1f))
-            ContactItemButton(
-                onClick = {
-                    scope.launch {
-                        try {
-                            val chatId = viewModel.getChat(contact)
-                            navController.navigate("chat_route/${chatId}") {
-                                launchSingleTop = true
+    Card(modifier = modifier) {
+        Column (modifier = Modifier){
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(dimensionResource(R.dimen.padding_small))
+            ) {
+                ProfilePic(contact.profilePic)
+                ContactInfo(contact.name)
+                Spacer(Modifier.weight(1f))
+                ContactItemButton(
+                    onClick = {
+                        scope.launch {
+                            try {
+                                //left composition error
+                                val chatId = viewModel.getChat(contact) //too slow as the navigate cancels the execution
+                                navController.navigate("chat_route/${chatId}") {
+                                    launchSingleTop = true
+                                }
+                            } catch (e: Exception) {
+                                Log.e("ContactItem", "Failed to open chat",e)
                             }
-                        } catch (e: Exception) {
-                            Log.e("ContactItem", "Failed to open chat", e)
                         }
                     }
-                }
-            )
+                )
+            }
         }
     }
 }

@@ -216,7 +216,7 @@ fun HomeItem(
                     Text("Match")
                 }
                 Button(
-                    onClick = { /*TODO*/ },
+                    onClick = { navController.navigate("ReportUser_route") },
                     modifier = Modifier.size(width = 150.dp, height = 46.dp)
                 ) {
                     Text("Report")
