@@ -45,7 +45,7 @@ import kotlinx.coroutines.launch
 
 
 @Composable
-fun LoginScreen(navController: NavController, viewModel: LoginViewModel = viewModel()) {
+fun LoginScreen(navController: NavController,  onSignInClick: () -> Unit, viewModel: LoginViewModel = viewModel()) {
     var loginChoice by remember { mutableStateOf("login") }
     val authState by viewModel.authState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
@@ -79,7 +79,7 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel = viewMo
             contentAlignment = Alignment.Center
         ) {
             if (loginChoice == "login") {
-                Login(onLoginChoiceChange = { loginChoice = it }, viewModel = viewModel)
+                Login(onLoginChoiceChange = { loginChoice = it }, viewModel = viewModel, onSignInClick)
             } else {
                 Register(onLoginChoiceChange = { loginChoice = it }, viewModel = viewModel)
             }
@@ -88,7 +88,7 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel = viewMo
 }
 
 @Composable
-fun Login(onLoginChoiceChange: (String) -> Unit, viewModel: LoginViewModel) {
+fun Login(onLoginChoiceChange: (String) -> Unit, viewModel: LoginViewModel, onSignInClick: () -> Unit) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
@@ -121,6 +121,10 @@ fun Login(onLoginChoiceChange: (String) -> Unit, viewModel: LoginViewModel) {
                 focusedContainerColor = Color.White
             )
         )
+        Spacer(modifier = Modifier.height(16.dp))
+        Button(onClick = { onSignInClick() }) {
+            Text("Sign in with google")
+        }
         Spacer(modifier = Modifier.height(16.dp))
         Row(
             modifier = Modifier.fillMaxWidth(0.8f),

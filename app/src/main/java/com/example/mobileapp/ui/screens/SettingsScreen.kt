@@ -27,13 +27,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 
 @Composable
-fun SettingsScreen(navController: NavController, onSignInClick: () -> Unit, viewModel: SettingsViewModel) {
+fun SettingsScreen(navController: NavController) {
+    Box(modifier = Modifier.background(color = Color(0xFF476A6F)).fillMaxSize()) {
 
-    Log.d("Linked", viewModel.isLinked().toString())
-
-    Box(modifier = Modifier.background(color = Color.Red).fillMaxSize()) {
-        Button(onClick = { onSignInClick() }) {
-            Text(text = if(viewModel.isLinked()) "google account linked" else "Sign in with google" )
-        }
     }
 }
