@@ -32,16 +32,20 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Checkbox
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.ui.res.stringResource
+import com.example.mobileapp.R
 import kotlinx.coroutines.launch
 
 
 @Composable
-fun LoginScreen(navController: NavController,  onSignInClick: () -> Unit, viewModel: LoginViewModel = viewModel()) {
+fun LoginScreen(navController: NavController, viewModel: LoginViewModel = viewModel()) {
     var loginChoice by remember { mutableStateOf("login") }
     val authState by viewModel.authState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
@@ -75,7 +79,7 @@ fun LoginScreen(navController: NavController,  onSignInClick: () -> Unit, viewMo
             contentAlignment = Alignment.Center
         ) {
             if (loginChoice == "login") {
-                Login(onLoginChoiceChange = { loginChoice = it }, viewModel = viewModel, onSignInClick)
+                Login(onLoginChoiceChange = { loginChoice = it }, viewModel = viewModel)
             } else {
                 Register(onLoginChoiceChange = { loginChoice = it }, viewModel = viewModel)
             }
@@ -84,7 +88,7 @@ fun LoginScreen(navController: NavController,  onSignInClick: () -> Unit, viewMo
 }
 
 @Composable
-fun Login(onLoginChoiceChange: (String) -> Unit, viewModel: LoginViewModel, onSignInClick: () -> Unit) {
+fun Login(onLoginChoiceChange: (String) -> Unit, viewModel: LoginViewModel) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
@@ -117,10 +121,6 @@ fun Login(onLoginChoiceChange: (String) -> Unit, viewModel: LoginViewModel, onSi
                 focusedContainerColor = Color.White
             )
         )
-        Spacer(modifier = Modifier.height(16.dp))
-        Button(onClick = { onSignInClick() }) {
-            Text("Sign in with google")
-        }
         Spacer(modifier = Modifier.height(16.dp))
         Row(
             modifier = Modifier.fillMaxWidth(0.8f),
@@ -251,9 +251,7 @@ fun TosDialog(onDismiss: () -> Unit) {
         },
         text = {
             Column {
-                Text("terms of service")
-                Spacer(modifier = Modifier.height(16.dp))
-                Text("more terms")
+                Text(text = stringResource(R.string.tos),modifier = Modifier.verticalScroll(rememberScrollState()))
             }
         },
         confirmButton = {
@@ -261,6 +259,6 @@ fun TosDialog(onDismiss: () -> Unit) {
                 Text("Close")
             }
         },
-        modifier = Modifier.fillMaxWidth(0.8f)
+        modifier = Modifier.fillMaxWidth(1.0F)
     )
 }
