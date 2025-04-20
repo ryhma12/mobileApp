@@ -4,6 +4,6 @@ import { validateBio } from "../controllers/BioController.js";
 
 const router = Router();
 
-router.post("/validate", validateBio);
+router.post("/validate", auth, validateBio);
 
 export default router;
