@@ -17,7 +17,6 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
-import googleSignInState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -82,8 +81,6 @@ class LoginViewModel(
     //google sign-in
 
     private val auth = Firebase.auth
-    private val _state = MutableStateFlow(googleSignInState())
-    val state = _state.asStateFlow()
 
     suspend fun signIn(): IntentSender? {
         val result = try {
