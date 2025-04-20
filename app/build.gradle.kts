@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     id("com.google.gms.google-services")
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.8.10"
 }
 
 android {
@@ -47,6 +48,12 @@ dependencies {
     implementation (libs.gson)
     implementation(libs.play.services.auth)
     implementation("androidx.activity:activity-ktx:1.10.1")
+    implementation(libs.kotlinx.serialization.json)
+    // Retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-scalars:2.9.0")
+    implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
+    implementation("com.squareup.okhttp3:okhttp:4.11.0")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
