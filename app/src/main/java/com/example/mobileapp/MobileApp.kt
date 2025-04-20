@@ -1,7 +1,5 @@
 package com.example.mobileapp
 
-import SettingsViewModel
-import android.util.Log
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -31,6 +29,7 @@ import com.example.mobileapp.ui.screens.chat.ChatScreen
 import com.example.mobileapp.ui.screens.contacts.ContactsScreen
 import com.example.mobileapp.ui.screens.HomeScreen
 import com.example.mobileapp.ui.screens.LoginScreen
+import com.example.mobileapp.ui.screens.LoginViewModel
 import com.example.mobileapp.ui.screens.MatchScreen
 import com.example.mobileapp.ui.screens.SearchScreen
 import com.example.mobileapp.ui.screens.SettingsScreen
@@ -39,7 +38,7 @@ import com.example.mobileapp.ui.screens.chat.ChatViewModel
 import com.example.mobileapp.ui.shared.TopBar
 
 @Composable
-fun MobileApp(navController: NavHostController = rememberNavController(), onSignInClick: () -> Unit = {}, viewModel: SettingsViewModel) {
+fun MobileApp(navController: NavHostController = rememberNavController(), onSignInClick: () -> Unit = {}, viewModel: LoginViewModel) {
     val backstackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = backstackEntry?.destination?.route
 
@@ -80,7 +79,8 @@ fun MobileApp(navController: NavHostController = rememberNavController(), onSign
             TopBar(
                 currentRoute = currentRoute,
                 navController = navController,
-                navItems = navItems
+                navItems = navItems,
+                loginViewModel = viewModel
             )
         },
         bottomBar = {
@@ -123,8 +123,8 @@ fun MobileApp(navController: NavHostController = rememberNavController(), onSign
                 ChatScreen(viewModel)
             }
             composable("match_route") { MatchScreen(navController) }
-            composable("settings_route") { SettingsScreen(navController ,onSignInClick, viewModel = viewModel) }
-            composable("login_route") { LoginScreen(navController) }
+            composable("settings_route") { SettingsScreen(navController) }
+            composable("login_route") { LoginScreen(navController, onSignInClick, viewModel = viewModel)}
             composable("updateUser_route") { UpdateUserInfoScreen(navController) }
             composable("bio_route") { BioScreen(navController) }
         }
