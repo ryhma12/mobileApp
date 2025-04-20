@@ -121,8 +121,8 @@ fun MobileApp(navController: NavHostController = rememberNavController(), onSign
                 arguments = listOf(navArgument("chatId") { type = NavType.StringType })
             ) {
                 // Passes chatId in the extras
-                val viewModel: ChatViewModel = viewModel(factory = ChatViewModel.Factory)
-                ChatScreen(viewModel)
+                val chatViewModel: ChatViewModel = viewModel(factory = ChatViewModel.Factory)
+                ChatScreen(chatViewModel)
             }
             composable("match_route") { MatchScreen(navController) }
             composable("settings_route") { SettingsScreen(navController) }
