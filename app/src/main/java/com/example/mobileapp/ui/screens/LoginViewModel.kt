@@ -1,32 +1,14 @@
 package com.example.mobileapp.ui.screens
 
-import android.content.Context
-import android.content.Intent
-import android.content.IntentSender
 import androidx.lifecycle.ViewModel
-import com.example.mobileapp.R
-import com.example.mobileapp.model.Account
-import com.example.mobileapp.model.GoogleAccount
-import com.example.mobileapp.model.UserData
-import com.google.android.gms.auth.api.identity.BeginSignInRequest
-import com.google.android.gms.auth.api.identity.BeginSignInRequest.GoogleIdTokenRequestOptions
-import com.google.android.gms.auth.api.identity.SignInClient
-import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.tasks.await
-import kotlin.coroutines.cancellation.CancellationException
 
-class LoginViewModel(
-    private val context: Context,
-    private val oneTapClient: SignInClient
-) : ViewModel() {
+class LoginViewModel : ViewModel() {
     private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
     private val _authState = MutableStateFlow<AuthState>(AuthState.Idle)
     val authState: StateFlow<AuthState> = _authState.asStateFlow()

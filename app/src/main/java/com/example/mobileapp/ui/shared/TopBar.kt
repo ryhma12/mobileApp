@@ -14,25 +14,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.navigation.NavController
 import com.example.mobileapp.NavItem
-import com.example.mobileapp.ui.screens.LoginViewModel
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBar(
     currentRoute: String?,
     navController: NavController,
-    navItems: List<NavItem>,
-    loginViewModel: LoginViewModel
+    navItems: List<NavItem>
 ) {
     var menuExpanded by remember { mutableStateOf(false) }
     val bottomBarRoutes = navItems.filter { it.showInBottomBar }.map { it.route }
     val showBackButton = currentRoute !in bottomBarRoutes
-    val coroutineScope = rememberCoroutineScope()
 
     TopAppBar(
         title = { "" },
@@ -70,11 +65,8 @@ fun TopBar(
                     DropdownMenuItem(
                         text = { Text("Logout") },
                         onClick = {
-                            coroutineScope.launch {
-                                loginViewModel.signOut()
-                                navController.navigate("login_route") {
-                                    popUpTo(0)
-                                }
+                            navController.navigate("login_route") {
+                                popUpTo(0)
                             }
                             menuExpanded = false
                         }

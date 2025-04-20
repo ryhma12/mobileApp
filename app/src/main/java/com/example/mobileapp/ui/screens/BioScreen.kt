@@ -68,9 +68,12 @@ import com.example.mobileapp.ui.screens.contacts.ContactsViewModel
 
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
-fun BioScreen(navController: NavController) {
+fun BioScreen(
+    navController: NavController,
+    uid: String
+) {
     Box(modifier = Modifier.background(color = Color.Cyan).fillMaxSize()) {
-        val viewModel = BioViewModel()
+        val viewModel = BioViewModel(uid = uid) //passing uid to the viewmodel, so that we get the right users info
         val contacts by viewModel.contacts.collectAsState()
         LazyColumn(
             modifier = Modifier.align(Alignment.Center)
@@ -113,7 +116,8 @@ fun HomeItem(
     tiktok.data = Uri.parse(tiktokurl)
 
     val list = mutableListOf("testi", "tagi", "miten", "menee") //placeholder list of tags
-
+    val minPrice: Float = 500.5F
+    val maxPrice: Float = 1500.545F
     Box() {
         Column(verticalArrangement = Arrangement.spacedBy(30.dp)) {
             Card(
@@ -133,13 +137,25 @@ fun HomeItem(
                     )
 
 
-                    Text(contact.name, fontSize = 32.sp)
+                    Text(contact.name, fontSize = 32.sp) //here is the username
                 }
-                Text(
-                    "tags: $list",
-                    fontSize = 25.sp,
-                    modifier = Modifier.padding(top = 70.dp, start = 50.dp)
-                )
+                Column() {
+                    Text(
+                        "tags: $list",
+                        fontSize = 25.sp,
+                        modifier = Modifier.padding(top = 30.dp, start = 50.dp)
+                    )
+                    Text(
+                        "Min price: $minPrice" + "€",
+                        fontSize = 25.sp,
+                        modifier = Modifier.padding(top = 10.dp,start = 50.dp)
+                    )
+                    Text(
+                        "Max price: $maxPrice" + "€",
+                        fontSize = 25.sp,
+                        modifier = Modifier.padding(top = 10.dp,start = 50.dp)
+                    )
+                }
                 Spacer(modifier = Modifier.weight(1f)) // using spacer, so that it doesn't push the images out of the card if the username or the list of users tags is long
                 Row(
                     verticalAlignment = Alignment.Bottom,
@@ -200,7 +216,7 @@ fun HomeItem(
                     Text("Match")
                 }
                 Button(
-                    onClick = { /*TODO*/ },
+                    onClick = { navController.navigate("ReportUser_route") },
                     modifier = Modifier.size(width = 150.dp, height = 46.dp)
                 ) {
                     Text("Report")
