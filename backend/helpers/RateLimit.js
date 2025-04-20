@@ -1,9 +1,9 @@
 const uidTimeMap = new Map();
-const RATE_LIMIT = 60000; // 1 minute
+const RATE_LIMIT = 5000;
 
 function isRateLimited(uid) {
-  const date = new Date
-  const currTime = date.getTime()
+  const date = new Date();
+  const currTime = date.getTime();
 
   const lastTime = uidTimeMap.get(uid);
   if (lastTime && currTime - lastTime < RATE_LIMIT) {
