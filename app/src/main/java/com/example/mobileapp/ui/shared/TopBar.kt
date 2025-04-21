@@ -38,30 +38,17 @@ fun TopBar(
     val bottomBarRoutes = navItems.filter { it.showInBottomBar }.map { it.route }
     val showBackButton = currentRoute !in bottomBarRoutes
     val coroutineScope = rememberCoroutineScope()
-    val showCreateContractButton = currentRoute == "chat_route/{chatId}"
 
 
     TopAppBar(
         title = { "" },
         navigationIcon = {
             if (showBackButton) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Back"
                         )
-                    }
-                    if (showCreateContractButton) {
-                        Button (onClick = {
-                            navController.navigate("create_contract_route")
-                        }) {
-                            Text("Create Contract")
-                        }
-                    }
                 }
             }
         },

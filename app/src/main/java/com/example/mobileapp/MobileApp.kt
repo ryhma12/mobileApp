@@ -38,6 +38,7 @@ import com.example.mobileapp.ui.screens.SettingsScreen
 import com.example.mobileapp.ui.screens.UpdateUserInfoScreen
 import com.example.mobileapp.ui.screens.chat.ChatViewModel
 import com.example.mobileapp.ui.screens.contract.CreateContractScreen
+import com.example.mobileapp.ui.screens.contract.CreateContractViewModel
 import com.example.mobileapp.ui.shared.TopBar
 
 @Composable
@@ -129,7 +130,13 @@ fun MobileApp(navController: NavHostController = rememberNavController(), onSign
             composable("settings_route") { SettingsScreen(navController) }
             composable("login_route") { LoginScreen(navController, onSignInClick, viewModel = viewModel)}
             composable("updateUser_route") { UpdateUserInfoScreen(navController) }
-            composable("create_contract_route") {CreateContractScreen(navController)}
+            composable(
+                "create_contract_route/{selectedContactUid}",
+                    arguments = listOf(navArgument("selectedContactUid") { type = NavType.StringType })
+                ) {
+                val createContractViewModel: CreateContractViewModel = viewModel(factory = CreateContractViewModel.Factory)
+                CreateContractScreen(createContractViewModel)
+            }
 
             composable(
                 "bio_route/{uid}",

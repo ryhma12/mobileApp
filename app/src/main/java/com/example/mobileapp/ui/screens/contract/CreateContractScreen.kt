@@ -1,50 +1,40 @@
 package com.example.mobileapp.ui.screens.contract
 
+import android.util.Log
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.mobileapp.ui.screens.Login
-import com.example.mobileapp.ui.screens.Register
+import com.example.mobileapp.model.Contact
+import com.example.mobileapp.ui.screens.contacts.ContactsViewModel
 
 @Composable
-fun CreateContractScreen(navController: NavController, viewModel: CreateContractViewModel = viewModel()) {
+fun CreateContractScreen(
+    viewModel: CreateContractViewModel
+) {
+    ContractForm(viewModel)
+}
+
+@Composable
+fun ContractForm(viewModel: CreateContractViewModel) {
     var price by remember { mutableStateOf("") }
-    val recipient by remember { mutableStateOf("recipe") }
-    val company by remember { mutableStateOf("company") }
+    val recipient =  viewModel.user?.username
+    val company = "Your Company"
 
-    Scaffold(
 
-    ) { padding ->
+    Scaffold { padding ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -52,11 +42,10 @@ fun CreateContractScreen(navController: NavController, viewModel: CreateContract
                 .padding(padding),
             contentAlignment = Alignment.Center
         ) {
-            Column(
-
-            ) {
+            Column {
                 Text("Contract", fontSize = 28.sp)
                 Spacer(modifier = Modifier.height(20.dp))
+
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(0.8f),
                     value = company,
@@ -69,10 +58,12 @@ fun CreateContractScreen(navController: NavController, viewModel: CreateContract
                         focusedContainerColor = Color.White
                     )
                 )
+
                 Spacer(modifier = Modifier.height(16.dp))
+
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(0.8f),
-                    value = recipient,
+                    value = recipient ?: "something went wrong retrieving recipient",
                     onValueChange = {},
                     label = { Text("Contract Recipient") },
                     singleLine = true,
@@ -82,7 +73,9 @@ fun CreateContractScreen(navController: NavController, viewModel: CreateContract
                         focusedContainerColor = Color.White
                     )
                 )
+
                 Spacer(modifier = Modifier.height(16.dp))
+
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(0.8f),
                     value = price,
@@ -99,17 +92,20 @@ fun CreateContractScreen(navController: NavController, viewModel: CreateContract
                         focusedContainerColor = Color.White
                     )
                 )
+
                 Spacer(modifier = Modifier.height(16.dp))
+
                 Row(
                     modifier = Modifier.fillMaxWidth(0.8f),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Button(onClick = {  }) {
+                    Button(onClick = {
+                        //viewModel.createContract(price)
+                    }) {
                         Text("Create Contract", color = Color.White)
                     }
                 }
-
             }
         }
     }

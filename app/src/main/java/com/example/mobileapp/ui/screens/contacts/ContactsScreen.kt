@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -64,21 +65,37 @@ fun ContactItem(
                 ProfilePic(contact.profilePic)
                 ContactInfo(contact.name)
                 Spacer(Modifier.weight(1f))
-                ContactItemButton(
-                    onClick = {
+                Row {
+                    Button(onClick = {
                         scope.launch {
                             try {
-                                //left composition error
-                                val chatId = viewModel.getChat(contact) //too slow as the navigate cancels the execution
-                                navController.navigate("chat_route/${chatId}") {
+                                val selectedContact = contact.uid
+                                navController.navigate("create_contract_route/${selectedContact}") {
                                     launchSingleTop = true
                                 }
                             } catch (e: Exception) {
                                 Log.e("ContactItem", "Failed to open chat",e)
                             }
                         }
+                    }) {
+                        Text("Create Contract")
                     }
-                )
+                    ContactItemButton(
+                        onClick = {
+                            scope.launch {
+                                try {
+                                    val chatId = viewModel.getChat(contact)
+                                    navController.navigate("chat_route/${chatId}") {
+                                        launchSingleTop = true
+                                    }
+                                } catch (e: Exception) {
+                                    Log.e("ContactItem", "Failed to open chat",e)
+                                }
+                            }
+                        }
+                    )
+                }
+
             }
         }
     }
