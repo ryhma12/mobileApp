@@ -47,15 +47,21 @@ class HomeViewModel : ViewModel(){  //using the ContactsViewModel with some mino
                         // Filters only yourself
                         val userId = document.id.takeIf { it == currentUid }
                         userId?.let {
+                            var userNameList = mutableListOf<String>() //placeholder list for tags
+                            val userName = document["tags"].toString() //get tags
+                            userNameList += userName //add the gotten tag to the list
                             Account(
                                 uid = it,
                                 name = document.getString("username") ?: "Unknown",
-                                description = document.getString("description") ?: "-"
+                                description = document.getString("description") ?: "-",
+                                tags = userNameList, //make account tags the placeholder list
+                                minPrice = document.getDouble("minPrice")?.toFloat() ?: 0.0f,
+                                maxPrice = document.getDouble("maxPrice")?.toFloat() ?: 0.0f,
                             )
                         }
                     }
                 } catch (e: Exception) {
-                    Log.e(TAG, "Failed to load contacts", e)
+                    Log.e(TAG, "Failed to load your homescreen", e)
                 }
             }
         }
