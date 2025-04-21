@@ -11,6 +11,7 @@ data class Account(
     val description: String = "",
     val minPrice: Float = 0f,
     val maxPrice: Float = 0f,
+    val type: String = "Influencer",
     val linkedAccounts: List<LinkedAccount> = emptyList(),
     val tags: MutableList<String> = mutableListOf()
 )

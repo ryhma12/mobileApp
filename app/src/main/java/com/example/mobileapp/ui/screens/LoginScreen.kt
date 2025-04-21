@@ -41,6 +41,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.ui.res.stringResource
 import com.example.mobileapp.R
+import com.example.mobileapp.model.Account
 import kotlinx.coroutines.launch
 
 
@@ -146,22 +147,27 @@ fun Login(onLoginChoiceChange: (String) -> Unit, viewModel: LoginViewModel, onSi
 
 @Composable
 fun Register(onLoginChoiceChange: (String) -> Unit, viewModel: LoginViewModel) {
-    var userName by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
+    var account by remember { mutableStateOf(Account()) }
     var verifyPassword by remember { mutableStateOf("") }
-    var email by remember { mutableStateOf("") }
     var tosCheck by remember { mutableStateOf(false) }
     var showTos by remember { mutableStateOf(false) }
+    var isCompany by remember { mutableStateOf(false) }
 
-    Column(
-    ) {
+    Column {
         Text("Register", fontSize = 28.sp)
         Spacer(modifier = Modifier.height(20.dp))
+
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(0.8f),
-            value = userName,
-            onValueChange = { userName = it },
-            label = { Text("username") },
+            value = account.username,
+            onValueChange = { account = account.copy(username = it) },
+            label = { Text(
+                if(isCompany){
+                    "Company name"
+                }else{
+                    "Username"
+                }
+            ) },
             singleLine = true,
             colors = TextFieldDefaults.colors(
                 unfocusedContainerColor = Color.LightGray,
@@ -169,10 +175,11 @@ fun Register(onLoginChoiceChange: (String) -> Unit, viewModel: LoginViewModel) {
             )
         )
         Spacer(modifier = Modifier.height(16.dp))
+
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(0.8f),
-            value = email,
-            onValueChange = { email = it },
+            value = account.email,
+            onValueChange = { account = account.copy(email = it) },
             label = { Text("email") },
             singleLine = true,
             colors = TextFieldDefaults.colors(
@@ -181,10 +188,11 @@ fun Register(onLoginChoiceChange: (String) -> Unit, viewModel: LoginViewModel) {
             )
         )
         Spacer(modifier = Modifier.height(16.dp))
+
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(0.8f),
-            value = password,
-            onValueChange = { password = it },
+            value = account.password,
+            onValueChange = { account = account.copy(password = it) },
             label = { Text("password") },
             singleLine = true,
             visualTransformation = PasswordVisualTransformation(),
@@ -194,6 +202,7 @@ fun Register(onLoginChoiceChange: (String) -> Unit, viewModel: LoginViewModel) {
             )
         )
         Spacer(modifier = Modifier.height(16.dp))
+
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(0.8f),
             value = verifyPassword,
@@ -207,19 +216,32 @@ fun Register(onLoginChoiceChange: (String) -> Unit, viewModel: LoginViewModel) {
             )
         )
         Spacer(modifier = Modifier.height(16.dp))
-        Row (
-            modifier = Modifier.fillMaxWidth(0.8f)
-        ){
+        Text(
+            if(isCompany){
+                "I’m registering as a user"
+            }else{
+                "I’m registering as a company"
+            },
+            modifier = Modifier
+                .clickable {
+                    isCompany = !isCompany
+                    account = account.copy(type = if (isCompany){"Company"}else{"Influencer"})
+                },
+            color = Color.Blue
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Row(modifier = Modifier.fillMaxWidth(0.8f)) {
             Text(
                 "By registering you agree to the terms of service",
                 modifier = Modifier
                     .weight(1f)
                     .clickable { showTos = true }
-
             )
-            Checkbox(tosCheck, onCheckedChange = {tosCheck = it})
+            Checkbox(tosCheck, onCheckedChange = { tosCheck = it })
         }
         Spacer(modifier = Modifier.height(16.dp))
+
         Row(
             modifier = Modifier.fillMaxWidth(0.8f),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -229,22 +251,30 @@ fun Register(onLoginChoiceChange: (String) -> Unit, viewModel: LoginViewModel) {
                 "Already have an account? Login.",
                 modifier = Modifier.clickable { onLoginChoiceChange("login") },
                 color = Color.Blue
-                )
-            Button(onClick = {
-                    if(tosCheck && userName.isNotBlank() && email.isNotBlank() && password.isNotBlank() && verifyPassword.isNotBlank()){
-                        viewModel.register(email, password, verifyPassword, userName)
+            )
+            Button(
+                onClick = {
+                    if (tosCheck &&
+                        account.username.isNotBlank() &&
+                        account.email.isNotBlank() &&
+                        account.password.isNotBlank() &&
+                        verifyPassword.isNotBlank()
+                    ) {
+                        viewModel.register(account.email, account.password, verifyPassword, account.username, account.type)
                     }
                 },
                 enabled = tosCheck
             ) {
-                Text("Sign up" , color = Color.White)
+                Text("Sign up", color = Color.White)
             }
         }
     }
-    if(showTos){
-        TosDialog(onDismiss = { showTos = false})
+
+    if (showTos) {
+        TosDialog(onDismiss = { showTos = false })
     }
 }
+
 
 @Composable
 fun TosDialog(onDismiss: () -> Unit) {

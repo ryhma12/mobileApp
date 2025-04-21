@@ -43,7 +43,7 @@ class LoginViewModel(
             }
     }
 
-    fun register(email: String, password: String,verifyPassword: String ,username: String) {
+    fun register(email: String, password: String,verifyPassword: String ,username: String, accountType: String) {
         _authState.value = AuthState.Loading
         if(password != verifyPassword){
             _authState.value = AuthState.Error("passwords do not match")
@@ -59,6 +59,7 @@ class LoginViewModel(
                             "username" to username,
                             "email" to email,
                             "uid" to it.uid,
+                            "type" to accountType
                         )
 
                         val firestore = FirebaseFirestore.getInstance()
