@@ -1,6 +1,7 @@
 package com.example.mobileapp.ui.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -95,7 +96,8 @@ fun SearchScreen(navController: NavController, viewModel: SearchViewModel = view
                             .fillMaxWidth()
                             .height(56.dp)
                             .background(Color.White)
-                            .padding(horizontal = 16.dp, vertical = 8.dp)
+                            .padding(horizontal = 16.dp, vertical = 8.dp).clickable { val uid= user.uid //getting the current uid of the user
+                                navController.navigate("bio_route/${uid}") }
                     )
                 }
             }

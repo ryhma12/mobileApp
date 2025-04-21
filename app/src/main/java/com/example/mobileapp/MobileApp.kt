@@ -140,7 +140,17 @@ fun MobileApp(navController: NavHostController = rememberNavController(), onSign
                     Log.d("NavHost", "No uid found")
                 }
             }
-            composable("ReportUser_route") { ReportUserScreen(navController) }
+            composable(
+                "ReportUser_route/{uid}",
+                arguments = listOf(navArgument("uid") { type = NavType.StringType })
+            ) { backStackEntry ->
+                val uid = backStackEntry.arguments?.getString("uid")
+                if(uid != null){
+                    ReportUserScreen(navController,uid = uid)
+                } else {
+                    Log.d("NavHost", "No uid found")
+                }
+            }
         }
     }
 }

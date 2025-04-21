@@ -116,8 +116,8 @@ fun HomeItem(
     tiktok.data = Uri.parse(tiktokurl)
 
     val list = mutableListOf("testi", "tagi", "miten", "menee") //placeholder list of tags
-    val minPrice: Float = 500.5F
-    val maxPrice: Float = 1500.545F
+    val minPrice: Float = 500.5F //placeholder for the min price
+    val maxPrice: Float = 1500.545F //placeholder for the max price
     Box() {
         Column(verticalArrangement = Arrangement.spacedBy(30.dp)) {
             Card(
@@ -141,17 +141,17 @@ fun HomeItem(
                 }
                 Column() {
                     Text(
-                        "tags: $list",
+                        "tags: "+contact.tags,
                         fontSize = 25.sp,
                         modifier = Modifier.padding(top = 30.dp, start = 50.dp)
                     )
                     Text(
-                        "Min price: $minPrice" + "€",
+                        "Min price: ${contact.minPrice}" + "€",
                         fontSize = 25.sp,
                         modifier = Modifier.padding(top = 10.dp,start = 50.dp)
                     )
                     Text(
-                        "Max price: $maxPrice" + "€",
+                        "Max price: ${contact.maxPrice}" + "€",
                         fontSize = 25.sp,
                         modifier = Modifier.padding(top = 10.dp,start = 50.dp)
                     )
@@ -209,14 +209,16 @@ fun HomeItem(
                 )
             }
             Row ( horizontalArrangement = Arrangement.spacedBy(50.dp)){
-                Button(
+                Button( //button to match the user, yet to be implemented
                     onClick = { /*TODO*/ },
                     modifier = Modifier.size(width = 150.dp, height = 46.dp)
                 ) {
                     Text("Match")
                 }
-                Button(
-                    onClick = { navController.navigate("ReportUser_route") },
+                val uid= contact.uid
+                Button( //button to report a user
+
+                    onClick = { navController.navigate("ReportUser_route/${uid}") },
                     modifier = Modifier.size(width = 150.dp, height = 46.dp)
                 ) {
                     Text("Report")

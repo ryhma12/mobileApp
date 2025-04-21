@@ -138,17 +138,17 @@ fun HomeScreen(navController: NavController) {
                         }
                         Column() {
                             Text(
-                                "tags: $list",
+                                "tags: "+contact.tags,
                                 fontSize = 25.sp,
                                 modifier = Modifier.padding(top = 30.dp, start = 50.dp)
                             )
                             Text(
-                                "Min price: $minPrice" + "€",
+                                "Min price: ${contact.minPrice}" + "€",
                                 fontSize = 25.sp,
                                 modifier = Modifier.padding(top = 10.dp,start = 50.dp)
                             )
                             Text(
-                                "Max price: $maxPrice" + "€",
+                                "Max price: ${contact.maxPrice}" + "€",
                                 fontSize = 25.sp,
                                 modifier = Modifier.padding(top = 10.dp,start = 50.dp)
                             )

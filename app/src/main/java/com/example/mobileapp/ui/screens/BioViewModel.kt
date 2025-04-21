@@ -49,15 +49,21 @@ class BioViewModel(uid: String) : ViewModel() {
                     // Filters only yourself
                     val userId = document.id.takeIf { uid == it }
                     userId?.let {
+                        var userNameList = mutableListOf<String>()
+                        val userName = document["tags"].toString()
+                        userNameList += userName
                         Account(
                             uid = it,
                             name = document.getString("username") ?: "Unknown",
                             description = document.getString("description") ?: "-",
-                        )
+                            tags = userNameList,
+                            minPrice = document.getDouble("minPrice")?.toFloat() ?: 0.0f,
+                            maxPrice = document.getDouble("maxPrice")?.toFloat() ?: 0.0f,
+                            )
                     }
                 }
             } catch (e: Exception) {
-                Log.e(TAG, "Failed to load contacts", e)
+                Log.e(TAG, "Failed to load bio", e)
             }
         }
     }
