@@ -21,9 +21,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 
 @Composable
-fun ReportUserScreen(navController: NavController, viewModel: UpdateUserInfoViewModel = viewModel()) {
-    var description by remember { mutableStateOf("") }
-
+fun ReportUserScreen(navController: NavController,
+                     uid: String) {
+    val viewModel = ReportViewModel(reportedUid = uid)
+    var ReportDescription by remember { mutableStateOf("") }
+    //this is the ui for the reportscreen backend/viewmodel yet to be implemented
     Column(
     ) {
         Column(
@@ -32,17 +34,17 @@ fun ReportUserScreen(navController: NavController, viewModel: UpdateUserInfoView
             Text(text = "select reason from below, or give the reason yourself: ")
         }
         Button(onClick = {
-            description = "Inappropriate/unprofessional messaging"
+            ReportDescription = "Inappropriate/unprofessional messaging"
         }, modifier = Modifier.padding(top = 10.dp)) { Text("Inappropriate/unprofessional messaging") }
         Button(onClick = {
-            description = "fake or deceiving profile"
+            ReportDescription = "fake or deceiving profile"
         }, modifier = Modifier.padding(top = 10.dp)) { Text("fake or deceiving profile") }
         Button(onClick = {
-            description = "User scammed us / did not meet the requirements of the contract"
+            ReportDescription = "User scammed us / did not meet the requirements of the contract"
         }, modifier = Modifier.padding(top = 10.dp)) { Text("User scammed us / did not meet the requirements of the contract") }
         TextField(
-            value = description,
-            onValueChange = { description = it },
+            value = ReportDescription,
+            onValueChange = { ReportDescription = it },
             placeholder = { Text("reason for reporting") },
             maxLines = 120,
             minLines = 8,
@@ -50,7 +52,11 @@ fun ReportUserScreen(navController: NavController, viewModel: UpdateUserInfoView
         )
         Spacer(modifier = Modifier.height(20.dp))
         Row() {
-            Button(onClick = { viewModel.updateUserInfo(null, null, description) }) {
+            Button(onClick = {viewModel.updateUserInfo(
+                ReportDescription
+            )
+            })
+            {
                 Text("report")
             }
         }

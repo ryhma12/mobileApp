@@ -10,7 +10,9 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -25,19 +27,50 @@ import androidx.navigation.NavController
 fun UpdateUserInfoScreen(navController: NavController, viewModel: UpdateUserInfoViewModel = viewModel()) {
     var description by remember { mutableStateOf("") }
 
-    Column(
-    ) {
-        Text("Update your bio")
+    var minPriceInput by remember { mutableStateOf("") }
+    var maxPriceInput by remember { mutableStateOf("") }
+
+    Column {
+        Text("Update your price range")
+
+        TextField(
+            value = minPriceInput,
+            onValueChange = { minPriceInput = it },
+            placeholder = { Text("min price") },
+            label = { Text("Min Price") }
+        )
+
+        TextField(
+            value = maxPriceInput,
+            onValueChange = { maxPriceInput = it },
+            placeholder = { Text("max price") },
+            label = { Text("Max Price") }
+        )
+
         TextField(
             value = description,
             onValueChange = { description = it },
             placeholder = { Text("description") },
-            maxLines = 120,
-            minLines = 8,
+            label = { Text("Description") }
         )
-        Spacer(modifier = Modifier.height(20.dp))
-        Row() {
-            Button(onClick = { viewModel.updateUserInfo(null, null, description) }) {
+
+        Row {
+            Button(onClick = {
+                val minPrice = minPriceInput.toFloatOrNull()
+                val maxPrice = maxPriceInput.toFloatOrNull()
+
+                if (minPrice != null && maxPrice != null) {
+                    viewModel.updateUserInfo(
+                        null,
+                        null,
+                        description,
+                        minPrice,
+                        maxPrice
+                    )
+                } else {
+                    // Show error, toast, or validation message
+                }
+            }) {
                 Text("Done")
             }
         }
