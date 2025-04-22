@@ -126,6 +126,28 @@ class CreateContractViewModel(selectedContactUid: String) : ViewModel() {
         }
 
         pdfDocument.close()
+        saveContractInfoToFirebase(price, recipient, company, context)
+    }
+
+    private suspend fun saveContractInfoToFirebase(
+        price: String,
+        recipient: String,
+        company: String,
+        context: Context
+    ) {
+        val firestore = FirebaseFirestore.getInstance().collection("contracts")
+
+        val contractData = hashMapOf(
+            "recipient" to recipient,
+            "company" to company,
+            "price" to price,
+        )
+
+        firestore.add(contractData)
+            .addOnFailureListener { e ->
+                Toast.makeText(context, "Failed to save contract to firestore: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+
     }
 
 }

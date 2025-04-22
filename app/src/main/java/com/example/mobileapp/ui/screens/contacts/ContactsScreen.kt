@@ -31,12 +31,15 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.mobileapp.R
 import com.example.mobileapp.model.Contact
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 
 @Composable
 fun ContactsScreen(navController: NavController) {
     val viewModel: ContactsViewModel = viewModel()
     val contacts by viewModel.contacts.collectAsState()
+
+
 
     LazyColumn(
         modifier = Modifier.fillMaxSize()
@@ -55,6 +58,8 @@ fun ContactItem(
     modifier: Modifier = Modifier,
 ){
     val scope = rememberCoroutineScope()
+    val currentUserType by viewModel.currentUserTypeState.collectAsState()
+
     Card(modifier = modifier) {
         Column (modifier = Modifier){
             Row(
@@ -66,20 +71,23 @@ fun ContactItem(
                 ContactInfo(contact.name)
                 Spacer(Modifier.weight(1f))
                 Row {
-                    Button(onClick = {
-                        scope.launch {
-                            try {
-                                val selectedContact = contact.uid
-                                navController.navigate("create_contract_route/${selectedContact}") {
-                                    launchSingleTop = true
+                    if(currentUserType == "Company"){
+                        Button(onClick = {
+                            scope.launch {
+                                try {
+                                    val selectedContact = contact.uid
+                                    navController.navigate("create_contract_route/${selectedContact}") {
+                                        launchSingleTop = true
+                                    }
+                                } catch (e: Exception) {
+                                    Log.e("ContactItem", "Failed to open chat",e)
                                 }
-                            } catch (e: Exception) {
-                                Log.e("ContactItem", "Failed to open chat",e)
                             }
+                        }) {
+                            Text("Create Contract")
                         }
-                    }) {
-                        Text("Create Contract")
                     }
+
                     ContactItemButton(
                         onClick = {
                             scope.launch {

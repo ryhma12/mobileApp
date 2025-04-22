@@ -1,11 +1,16 @@
 package com.example.mobileapp.ui.screens.contacts
 
 import android.util.Log
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mobileapp.helpers.UserHelper
+import com.example.mobileapp.model.Account
 import com.example.mobileapp.model.ChatterInfo
 import com.example.mobileapp.model.Contact
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ServerValue
 import com.google.firebase.firestore.FirebaseFirestore
@@ -35,8 +40,39 @@ class ContactsViewModel : ViewModel() {
     private val db = FirebaseDatabase.getInstance("https://mobileapp-d2bf2-default-rtdb.europe-west1.firebasedatabase.app")
     private val chatsRef = db.getReference(PATH_CHATS)
 
+    private val _currentUserType = MutableStateFlow("") //
+    val currentUserTypeState: StateFlow<String> = _currentUserType
+
+
     init {
         loadContacts()
+        checkAccountType()
+    }
+
+    private fun checkAccountType() {
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        val uid = currentUser?.uid
+
+        if(currentUser == null) return
+
+        usersCollection.document(uid!!)
+            .get()
+            .addOnSuccessListener { document ->
+                if (document.exists()) {
+                    val user = document.toObject(Account::class.java)
+                    if(user != null){
+                        _currentUserType.value = user.type
+                    }else{
+                        Log.e("contacts", "user document is null or missing type field")
+                    }
+
+                } else {
+                    Log.e("Firestore", "No such document")
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.e("Firestore", "Error getting user data", exception)
+            }
     }
 
     // Doesnt have matching yet

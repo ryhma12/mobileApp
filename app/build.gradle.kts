@@ -49,6 +49,7 @@ dependencies {
     implementation(libs.play.services.auth)
     implementation("androidx.activity:activity-ktx:1.10.1")
     implementation(libs.kotlinx.serialization.json)
+
     // Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-scalars:2.9.0")
