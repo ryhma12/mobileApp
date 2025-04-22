@@ -10,6 +10,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -19,6 +20,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.mobileapp.model.Contact
 import com.example.mobileapp.ui.screens.contacts.ContactsViewModel
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 
 @Composable
 fun CreateContractScreen(
@@ -100,8 +103,14 @@ fun ContractForm(viewModel: CreateContractViewModel) {
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
+                    val context = LocalContext.current
+                    val coroutineScope = rememberCoroutineScope()
+
                     Button(onClick = {
-                        //viewModel.createContract(price)
+                        coroutineScope.launch {
+                            viewModel.generatePDF(price, recipient?:"", company, context)
+                        }
+
                     }) {
                         Text("Create Contract", color = Color.White)
                     }
