@@ -47,7 +47,9 @@ class NotificationsViewModel : ViewModel() {
                         Contract(
                             company = data["company"] as? String ?: "Unknown Company",
                             recipient = data["recipient"] as? String ?: "Unknown Recipient",
-                            price = data["price"] as? String ?: "0.00"
+                            price = data["price"] as? String ?: "0.00",
+                            status = data["status"] as? String ?: "pending",
+                            contractId = doc.id
                         )
                     }
 
@@ -60,6 +62,45 @@ class NotificationsViewModel : ViewModel() {
             }
         } else {
             _error.value = "User is not logged in"
+        }
+    }
+
+    fun declineContract(contractId: String) {
+        viewModelScope.launch {
+            try {
+                db.collection("contracts").document(contractId)
+                    .update("status", "archive")
+                    .await()
+                getContractsByCurrentUser()
+            } catch (e: Exception) {
+                _error.value = "Error updating contract: ${e.message}"
+            }
+        }
+    }
+
+    fun acceptContract(contractId: String) {
+        viewModelScope.launch {
+            try {
+                db.collection("contracts").document(contractId)
+                    .update("status", "ongoing")
+                    .await()
+                getContractsByCurrentUser()
+            } catch (e: Exception) {
+                _error.value = "Error updating contract: ${e.message}"
+            }
+        }
+    }
+
+    fun closeContract(contractId: String) {
+        viewModelScope.launch {
+            try {
+                db.collection("contracts").document(contractId)
+                    .update("status", "archive")
+                    .await()
+                getContractsByCurrentUser()
+            } catch (e: Exception) {
+                _error.value = "Error updating contract: ${e.message}"
+            }
         }
     }
 }

@@ -157,6 +157,7 @@ class CreateContractViewModel(private val selectedContactUid: String) : ViewMode
             "company" to company,
             "companyUid" to currentUser?.uid,
             "price" to price,
+            "status" to "pending"
         )
 
         firestore.add(contractData)
