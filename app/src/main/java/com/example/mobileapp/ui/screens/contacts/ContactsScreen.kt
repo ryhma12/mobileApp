@@ -3,6 +3,7 @@ package com.example.mobileapp.ui.screens.contacts
 import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -23,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
@@ -31,21 +33,24 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.mobileapp.R
 import com.example.mobileapp.model.Contact
-import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 
 @Composable
 fun ContactsScreen(navController: NavController) {
     val viewModel: ContactsViewModel = viewModel()
     val contacts by viewModel.contacts.collectAsState()
-
-
-
-    LazyColumn(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        items(contacts) {
-            ContactItem(navController, contact = it, viewModel = viewModel)
+    if(contacts.isNotEmpty()) {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            items(contacts) {
+                ContactItem(navController, contact = it, viewModel = viewModel)
+            }
+        }
+    } else {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Text("You have no contacts")
+            
         }
     }
 }
@@ -60,50 +65,46 @@ fun ContactItem(
     val scope = rememberCoroutineScope()
     val currentUserType by viewModel.currentUserTypeState.collectAsState()
 
-    Card(modifier = modifier) {
-        Column (modifier = Modifier){
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(dimensionResource(R.dimen.padding_small))
-            ) {
-                ProfilePic(contact.profilePic)
-                ContactInfo(contact.name)
-                Spacer(Modifier.weight(1f))
-                Row {
-                    if(currentUserType == "Company"){
-                        Button(onClick = {
-                            scope.launch {
-                                try {
-                                    val selectedContact = contact.uid
-                                    navController.navigate("create_contract_route/${selectedContact}") {
-                                        launchSingleTop = true
-                                    }
-                                } catch (e: Exception) {
-                                    Log.e("ContactItem", "Failed to open chat",e)
+    Card(modifier = Modifier.fillMaxWidth().padding(dimensionResource(R.dimen.padding_small))) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(dimensionResource(R.dimen.padding_small))
+        ) {
+            ProfilePic(contact.profilePic)
+            ContactInfo(contact.name)
+            Spacer(Modifier.weight(1f))
+            Row {
+                if(currentUserType == "Company"){
+                    Button(onClick = {
+                        scope.launch {
+                            try {
+                                val selectedContact = contact.uid
+                                navController.navigate("create_contract_route/${selectedContact}") {
+                                    launchSingleTop = true
                                 }
+                            } catch (e: Exception) {
+                                Log.e("ContactItem", "Failed to open chat",e)
                             }
-                        }) {
-                            Text("Create Contract")
+                        }
+                    }) {
+                        Text("Create Contract")
+                    }
+                }
+                ContactItemButton(
+                    onClick = {
+                        scope.launch {
+                            try {
+                                val chatId = viewModel.getChat(contact)
+                                navController.navigate("chat_route/${chatId}") {
+                                    launchSingleTop = true
+                                }
+                            } catch (e: Exception) {
+                                Log.e("ContactItem", "Failed to open chat",e)
+                            }
                         }
                     }
-
-                    ContactItemButton(
-                        onClick = {
-                            scope.launch {
-                                try {
-                                    val chatId = viewModel.getChat(contact)
-                                    navController.navigate("chat_route/${chatId}") {
-                                        launchSingleTop = true
-                                    }
-                                } catch (e: Exception) {
-                                    Log.e("ContactItem", "Failed to open chat",e)
-                                }
-                            }
-                        }
-                    )
-                }
-
+                )
             }
         }
     }
