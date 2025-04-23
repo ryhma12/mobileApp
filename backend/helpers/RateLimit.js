@@ -1,7 +1,7 @@
 const uidTimeMap = new Map();
 const RATE_LIMIT = 5000;
 
-function isRateLimited(uid) {
+const isRateLimited = (uid) => {
   const date = new Date();
   const currTime = date.getTime();
 
@@ -11,6 +11,6 @@ function isRateLimited(uid) {
   }
   uidTimeMap.set(uid, currTime);
   return false;
-}
+};
 
 export { isRateLimited };

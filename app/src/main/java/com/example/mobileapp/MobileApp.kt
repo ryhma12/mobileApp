@@ -29,9 +29,11 @@ import com.example.mobileapp.ui.screens.BioScreen
 import com.example.mobileapp.ui.screens.chat.ChatScreen
 import com.example.mobileapp.ui.screens.contacts.ContactsScreen
 import com.example.mobileapp.ui.screens.HomeScreen
+import com.example.mobileapp.ui.screens.HomeViewModel
 import com.example.mobileapp.ui.screens.LoginScreen
 import com.example.mobileapp.ui.screens.LoginViewModel
 import com.example.mobileapp.ui.screens.MatchScreen
+import com.example.mobileapp.ui.screens.MatchViewModel
 import com.example.mobileapp.ui.screens.ReportUserScreen
 import com.example.mobileapp.ui.screens.SearchScreen
 import com.example.mobileapp.ui.screens.SettingsScreen
@@ -115,7 +117,10 @@ fun MobileApp(navController: NavHostController = rememberNavController(), onSign
             startDestination = "login_route",
             modifier = Modifier.padding(innerPadding)
         ) {
-            composable("home_route") { HomeScreen(navController) }
+            composable("home_route") {
+                val homeViewModel: HomeViewModel = viewModel()
+                HomeScreen(navController, viewModel = homeViewModel)
+            }
             composable("search_route") { SearchScreen(navController) }
             composable("contacts_route") { ContactsScreen(navController) }
             composable(
@@ -126,7 +131,10 @@ fun MobileApp(navController: NavHostController = rememberNavController(), onSign
                 val chatViewModel: ChatViewModel = viewModel(factory = ChatViewModel.Factory)
                 ChatScreen(chatViewModel)
             }
-            composable("match_route") { MatchScreen(navController) }
+            composable("match_route") {
+                val matchViewModel: MatchViewModel = viewModel()
+                MatchScreen(navController, viewModel = matchViewModel)
+            }
             composable("settings_route") { SettingsScreen(navController) }
             composable("login_route") { LoginScreen(navController, onSignInClick, viewModel = viewModel)}
             composable("updateUser_route") { UpdateUserInfoScreen(navController) }

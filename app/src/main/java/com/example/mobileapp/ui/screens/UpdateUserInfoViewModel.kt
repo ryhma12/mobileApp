@@ -40,13 +40,11 @@ class UpdateUserInfoViewModel() : ViewModel() {
     }
     private val updates = mutableMapOf<String, Any>()
 
-    fun updateUserInfo(newUsername: String?, newEmail: String?, description: String?, minPrice: Float?, maxPrice: Float?) {
+    fun updateUserInfo(newUsername: String?, newEmail: String?, description: String?) {
         updates.clear()
 
         newUsername?.let { updates["username"] = it }
         newEmail?.let { updates["email"] = it }
-        minPrice?.let { updates["minPrice"] = it }
-        maxPrice?.let { updates["maxPrice"] = it }
         //description?.let { updates["description"] = it }
 
         if(!description.isNullOrBlank()){

@@ -50,7 +50,7 @@ const validateBio = async (req, res, next) => {
     if (!bio || bio.trim().length === 0) {
       throw new ApiError("Bio not found", 404);
     }
-    if (oldBio.trim() === bio.trim()) {
+    if (oldBio && oldBio.trim() === bio.trim()) {
       throw new ApiError("Bio does not have changes", 304);
     }
     if (isRateLimited(uid)) {
@@ -59,10 +59,19 @@ const validateBio = async (req, res, next) => {
     const result = await getBioValidation(bio);
     if (!result) throw new ApiError("Validation failed");
 
-    await userRef.update({ 
+    if (result.tags) {
+      result.tags = result.tags.map((tag) =>
+        tag.toLowerCase().replace(/\s+/g, "")
+      );
+    }
+
+    console.log(result);
+
+    await userRef.update({
       description: bio,
       isFlagged: result.isValid,
       rating: result.rating,
+      tags: result.tags,
     });
 
     if (result.isValid) {
@@ -92,8 +101,6 @@ const getBioValidation = async (bio) => {
     response_format: zodResponseFormat(bioValidation, "validation"),
   });
   const validation = completion.choices[0].message.parsed;
-
-  console.log(validation);
   return validation;
 };
 

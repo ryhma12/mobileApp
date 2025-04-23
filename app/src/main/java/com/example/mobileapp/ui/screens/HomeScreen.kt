@@ -68,9 +68,8 @@ import com.example.mobileapp.ui.screens.contacts.ContactsViewModel
 
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(navController: NavController, viewModel: HomeViewModel) {
     Box(modifier = Modifier.background(color = Color.Cyan).fillMaxSize()) {
-        val viewModel = HomeViewModel()
         val contacts by viewModel.contacts.collectAsState()
         LazyColumn(
             modifier = Modifier.align(Alignment.Center)
