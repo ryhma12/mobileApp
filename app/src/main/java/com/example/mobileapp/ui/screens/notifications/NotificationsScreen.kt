@@ -34,12 +34,15 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import kotlinx.coroutines.launch
 
 @Composable
 fun NotificationsScreen(viewModel: NotificationsViewModel = viewModel()) {
@@ -50,7 +53,8 @@ fun NotificationsScreen(viewModel: NotificationsViewModel = viewModel()) {
     var selectedTab by remember { mutableStateOf("Pending") }
     val filteredContracts = contracts.filter { it.status.equals(selectedTab, ignoreCase = true) }
 
-
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
 
     Box(modifier = Modifier.background(color = Color(0xFF476A6F)).fillMaxSize()) {
         Column(
@@ -92,7 +96,11 @@ fun NotificationsScreen(viewModel: NotificationsViewModel = viewModel()) {
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Text(text = contract.company)
+                            Text(text = contract.company, modifier = Modifier.clickable {
+                                coroutineScope.launch {
+                                    viewModel.generatePDF(contract.price, contract.recipient?:"", contract.company?:"", context)
+                                }
+                            })
 
                             when (contract.status.lowercase()) {
                                 "pending" -> {
