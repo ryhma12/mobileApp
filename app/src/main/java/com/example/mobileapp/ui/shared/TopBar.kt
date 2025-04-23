@@ -7,6 +7,7 @@ import androidx.compose.material.Button
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -54,6 +55,14 @@ fun TopBar(
         },
         actions = {
             if (currentRoute in bottomBarRoutes) {
+                IconButton(onClick = {
+                    navController.navigate("notifications_route")
+                }) {
+                    Icon(
+                        imageVector = Icons.Default.Notifications,
+                        contentDescription = "notifications"
+                    )
+                }
                 IconButton(onClick = { menuExpanded = true }) {
                     Icon(
                         imageVector = Icons.Default.MoreVert,

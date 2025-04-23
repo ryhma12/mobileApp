@@ -18,13 +18,15 @@ import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.example.mobileapp.model.Account
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 import kotlinx.coroutines.launch
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.toObject
 import kotlinx.coroutines.tasks.await
 
 
-class CreateContractViewModel(selectedContactUid: String) : ViewModel() {
+class CreateContractViewModel(private val selectedContactUid: String) : ViewModel() {
     companion object {
         val Factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory {
             @Suppress("UNCHECKED_CAST")
@@ -41,18 +43,30 @@ class CreateContractViewModel(selectedContactUid: String) : ViewModel() {
     }
 
     private val firestore = FirebaseFirestore.getInstance()
-    var user: Account? = null
+    var recipient: Account? = null
+    var currentUser: Account? = null
+
+    private val currentUserUid = Firebase.auth.currentUser?.uid
 
     init {
-        fetchUserByUid(selectedContactUid)
+        if (currentUserUid != null) {
+            fetchUserByUid(selectedContactUid, currentUserUid)
+        }
     }
 
-    private fun fetchUserByUid(uid: String) {
+    private fun fetchUserByUid(recipientUid: String, companyUid: String) {
         viewModelScope.launch {
             try {
-                val userDocument = firestore.collection("users").document(uid).get().await()
-                if (userDocument.exists()) {
-                    user = userDocument.toObject<Account>()
+                val recipientDocument = firestore.collection("users").document(recipientUid).get().await()
+                if (recipientDocument.exists()) {
+                    recipient = recipientDocument.toObject<Account>()
+                } else {
+                    Log.d("404", "user not found")
+                }
+
+                val currentUserDocument = firestore.collection("users").document(companyUid).get().await()
+                if (currentUserDocument.exists()) {
+                    currentUser = currentUserDocument.toObject<Account>()
                 } else {
                     Log.d("404", "user not found")
                 }
@@ -139,7 +153,9 @@ class CreateContractViewModel(selectedContactUid: String) : ViewModel() {
 
         val contractData = hashMapOf(
             "recipient" to recipient,
+            "recipientUid" to selectedContactUid,
             "company" to company,
+            "companyUid" to currentUser?.uid,
             "price" to price,
         )
 

@@ -39,6 +39,7 @@ import com.example.mobileapp.ui.screens.UpdateUserInfoScreen
 import com.example.mobileapp.ui.screens.chat.ChatViewModel
 import com.example.mobileapp.ui.screens.contract.CreateContractScreen
 import com.example.mobileapp.ui.screens.contract.CreateContractViewModel
+import com.example.mobileapp.ui.screens.notifications.NotificationsScreen
 import com.example.mobileapp.ui.shared.TopBar
 
 @Composable
@@ -137,7 +138,7 @@ fun MobileApp(navController: NavHostController = rememberNavController(), onSign
                 val createContractViewModel: CreateContractViewModel = viewModel(factory = CreateContractViewModel.Factory)
                 CreateContractScreen(createContractViewModel)
             }
-
+            composable("notifications_route") { NotificationsScreen() }
             composable(
                 "bio_route/{uid}",
                 arguments = listOf(navArgument("uid") { type = NavType.StringType })

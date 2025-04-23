@@ -49,7 +49,7 @@ class ChatViewModel(chatId: String) : ViewModel() {
         }
     }
 
-    private val db = FirebaseDatabase.getInstance()
+    private val db = FirebaseDatabase.getInstance("https://mobileapp-d2bf2-default-rtdb.europe-west1.firebasedatabase.app")
     private val chatRef = db.getReference("$PATH_CHATS/$chatId")
     private val messagesRef = chatRef.child(PATH_MESSAGES)
 

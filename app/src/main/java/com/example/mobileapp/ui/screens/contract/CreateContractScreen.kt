@@ -33,8 +33,8 @@ fun CreateContractScreen(
 @Composable
 fun ContractForm(viewModel: CreateContractViewModel) {
     var price by remember { mutableStateOf("") }
-    val recipient =  viewModel.user?.username
-    val company = "Your Company"
+    val recipient =  viewModel.recipient?.username
+    val company = viewModel.currentUser?.username
 
 
     Scaffold { padding ->
@@ -51,7 +51,7 @@ fun ContractForm(viewModel: CreateContractViewModel) {
 
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(0.8f),
-                    value = company,
+                    value = company ?: "something went wrong retrieving your account",
                     onValueChange = {},
                     label = { Text("Company") },
                     singleLine = true,
@@ -108,7 +108,7 @@ fun ContractForm(viewModel: CreateContractViewModel) {
 
                     Button(onClick = {
                         coroutineScope.launch {
-                            viewModel.generatePDF(price, recipient?:"", company, context)
+                            viewModel.generatePDF(price, recipient?:"", company?:"", context)
                         }
 
                     }) {
