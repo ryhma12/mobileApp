@@ -38,7 +38,6 @@ const generateMatchesInBatch = async () => {
       };
     });
 
-    //const matchScores = [];
 
     for (let i = 0; i < userVectors.length; i++) {
       const userA = userVectors[i];
@@ -72,7 +71,9 @@ const generateMatchesInBatch = async () => {
               userB: userB.uid,
               score,
               tags: overlappingTags,
+              isAccepted: false,
             };
+            console.log(matchData)
             await matchRef.set(matchData, { merge: true });
           } catch (error) {
             console.error("Failed to write match: ", userA.uid, error);
@@ -80,9 +81,6 @@ const generateMatchesInBatch = async () => {
         }
       }
     }
-
-    matchScores.sort((a, b) => b.score - a.score);
-    console.log(matchScores);
   } catch (error) {
     console.log(error);
   }

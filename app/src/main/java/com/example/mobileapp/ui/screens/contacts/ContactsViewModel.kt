@@ -1,9 +1,6 @@
 package com.example.mobileapp.ui.screens.contacts
 
 import android.util.Log
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mobileapp.helpers.UserHelper
@@ -14,6 +11,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ServerValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.toObject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -75,18 +73,18 @@ class ContactsViewModel : ViewModel() {
             }
     }
 
-    // Doesnt have matching yet
     private fun loadContacts() {
         viewModelScope.launch {
             try {
-                val snapshot = usersCollection.get().await()
-                _contacts.value = snapshot.documents.mapNotNull { document ->
-                    // Filters everyone other than yourself atm
-                    val userId = document.id.takeIf { it != currentUid }
-                    userId?.let {
+                val currentUserDoc = usersCollection.document(currentUid).get().await()
+
+                val contactIds = currentUserDoc.get("contacts") as List<String>
+                _contacts.value = contactIds.mapNotNull { contactId ->
+                    val userSnapshot = usersCollection.document(contactId).get().await()
+                    userSnapshot.toObject<Account>()?.let { account ->
                         Contact(
-                            uid = it,
-                            name = document.getString("username") ?: "Unknown"
+                            uid = userSnapshot.id,
+                            name = account.username
                         )
                     }
                 }
