@@ -56,20 +56,11 @@ fun UpdateUserInfoScreen(navController: NavController, viewModel: UpdateUserInfo
 
         Row {
             Button(onClick = {
-                val minPrice = minPriceInput.toFloatOrNull()
-                val maxPrice = maxPriceInput.toFloatOrNull()
-
-                if (minPrice != null && maxPrice != null) {
-                    viewModel.updateUserInfo(
-                        null,
-                        null,
-                        description,
-                        minPrice,
-                        maxPrice
-                    )
-                } else {
-                    // Show error, toast, or validation message
-                }
+                viewModel.updateUserInfo(
+                    null,
+                    null,
+                    description,
+                )
             }) {
                 Text("Done")
             }

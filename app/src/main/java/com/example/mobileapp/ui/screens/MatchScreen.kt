@@ -28,6 +28,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.mobileapp.R
 import androidx.navigation.NavController
 import com.example.mobileapp.model.Account
@@ -36,14 +37,13 @@ import com.example.mobileapp.ui.screens.contacts.ContactItem
 import com.example.mobileapp.ui.screens.contacts.ProfilePic
 
 @Composable
-fun MatchScreen(navController: NavController) {
+fun MatchScreen(navController: NavController, viewModel: MatchViewModel) {
     Box(modifier = Modifier.background(color = Color.Cyan).fillMaxSize()) {
       //  Text("Matches", modifier = Modifier.align(Alignment.Center), fontSize = 32.sp)
-        val viewModel = MatchViewModel()
-        val contacts by viewModel.contacts.collectAsState()
+        val matches by viewModel.matches.collectAsState()
         LazyColumn(Modifier.align(Alignment.Center),verticalArrangement = Arrangement.spacedBy(10.dp)) {
-            items(contacts) {
-                MatchItem(navController, contact = it, viewModel = viewModel)
+            items(matches) {
+                MatchItem(navController, matche = it, viewModel = viewModel)
             }
         }
 
@@ -52,11 +52,10 @@ fun MatchScreen(navController: NavController) {
 @Composable
 fun MatchItem(
     navController: NavController,
-    contact: Account,
+    matche: Account,
     viewModel: MatchViewModel,
     modifier: Modifier = Modifier,
 ){
- //   val scope = rememberCoroutineScope()
     Box() {
         Card(modifier = Modifier.size(width = 350.dp, height = 70.dp)) {
             Column(modifier = Modifier) {
@@ -66,12 +65,12 @@ fun MatchItem(
                         .size(width = 300.dp, height = 70.dp)
                 ) {
                     ProfilePic(R.drawable.bioplaceholder)
-                    ContactInfo(contact.name)
+                    ContactInfo(matche.name)
                     Spacer(Modifier.weight(1f))
                     ContactItemButton(
                         onClick = {
-                            val uid= contact.uid //getting the current uid of the user
-                                    navController.navigate("bio_route/${uid}") //passing the uid to the bioscreen, so that we can get the proper info from the right user
+                            val uid= matche.uid //getting the current uid of the user
+                            navController.navigate("bio_route/${uid}") //passing the uid to the bioscreen, so that we can get the proper info from the right user
                         }
                     )
                 }
